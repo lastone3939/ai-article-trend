@@ -6,7 +6,7 @@
 <title>AI記事トレンド</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -190,7 +190,7 @@ body {
   flex-direction: column;
   gap: 10px;
   transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-  cursor: default;
+  cursor: pointer;
 }
 .card:hover {
   transform: translateY(-2px);
@@ -339,6 +339,227 @@ body {
   color: #9ca3af;
 }
 
+/* ===== MODAL OVERLAY ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  /* fade in */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.modal-overlay.open {
+  display: flex;
+  opacity: 1;
+}
+.modal-overlay.fading-out {
+  opacity: 0;
+}
+
+/* ===== MODAL BODY ===== */
+.modal {
+  background: #ffffff;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* slide up */
+  transform: translateY(16px);
+  transition: transform 0.22s ease;
+  overscroll-behavior: contain;
+}
+.modal-overlay.open .modal {
+  transform: translateY(0);
+}
+
+/* scrollbar inside modal */
+.modal::-webkit-scrollbar { width: 6px; }
+.modal::-webkit-scrollbar-track { background: transparent; }
+.modal::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 3px; }
+
+/* close button */
+.modal-close {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 16px 0;
+  background: #ffffff;
+}
+.modal-close-btn {
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: #f3f4f6;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.modal-close-btn:hover {
+  background: #e5e7eb;
+  color: #37352f;
+}
+
+/* modal content area */
+.modal-content {
+  padding: 8px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #37352f;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.modal-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.modal-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e5e7eb;
+  flex-shrink: 0;
+}
+.modal-author-info {
+  min-width: 0;
+  flex: 1;
+}
+.modal-author-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #37352f;
+}
+.modal-author-sub {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 1px;
+}
+
+.modal-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.modal-date {
+  font-size: 12px;
+  color: #9ca3af;
+}
+.modal-tag-badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  background: #ffffff;
+}
+.modal-translated-badge {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  letter-spacing: 0.02em;
+}
+
+.modal-stats {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #6b7280;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #f3f4f6;
+}
+.modal-stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-divider {
+  border: none;
+  border-top: 1px solid #f3f4f6;
+}
+
+.modal-body-text {
+  font-size: 15px;
+  color: #37352f;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 4px;
+}
+.modal-original-link {
+  font-size: 13px;
+  color: #6b7280;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.15s;
+}
+.modal-original-link:hover {
+  color: #37352f;
+}
+.modal-open-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 20px;
+  background: #37352f;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Noto Sans JP', sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.modal-open-btn:hover {
+  background: #1a1915;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1199px) {
   .grid {
@@ -375,6 +596,31 @@ body {
   .card-title { font-size: 13px; }
   .card-body { font-size: 12px; }
   .card-stats { font-size: 11px; gap: 8px; }
+
+  /* mobile: full screen modal */
+  .modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+  .modal {
+    max-width: 100%;
+    max-height: 96vh;
+    border-radius: 16px 16px 0 0;
+    transform: translateY(40px);
+  }
+  .modal-overlay.open .modal {
+    transform: translateY(0);
+  }
+  .modal-content {
+    padding: 4px 18px 32px;
+  }
+  .modal-title {
+    font-size: 17px;
+  }
+  .modal-body-text {
+    font-size: 14px;
+    line-height: 1.75;
+  }
 }
 </style>
 </head>
@@ -431,9 +677,25 @@ body {
   <div class="loading">データを読み込んでいます...</div>
 </div>
 
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title-el">
+  <div class="modal" id="modal-panel">
+    <div class="modal-close">
+      <button class="modal-close-btn" id="modal-close-btn" aria-label="閉じる">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-content" id="modal-content">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</div>
+
 <script>
 let allArticles = [];
-let activeTags = new Set(); // empty = all
+let activeTags = new Set();
 let currentSort = 'likes';
 let searchQuery = '';
 
@@ -469,6 +731,7 @@ const icons = {
   retweet: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
   bookmark: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
   eye: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  external: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
 };
 
 // --- render card ---
@@ -492,11 +755,11 @@ function renderCard(a) {
   ].filter(Boolean).join('');
 
   const noteLink = a.note_url
-    ? `<a class="card-link" href="${escHtml(a.note_url)}" target="_blank" rel="noopener">note</a>`
+    ? `<a class="card-link" href="${escHtml(a.note_url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">note</a>`
     : '';
 
   return `
-    <div class="card">
+    <div class="card" data-id="${escHtml(a.id)}" role="button" tabindex="0" aria-label="${escHtml(a.title || '記事を開く')}">
       ${tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : ''}
       <div class="card-title">${escHtml(a.title || '(タイトルなし)')}</div>
       ${a.body ? `<div class="card-body">${escHtml(a.body)}</div>` : ''}
@@ -513,18 +776,138 @@ function renderCard(a) {
         <span class="card-date">${formatDate(a.created_at)}</span>
         <div class="card-links">
           ${noteLink}
-          <a class="card-link" href="${escHtml(a.url)}" target="_blank" rel="noopener">Xで開く</a>
+          <a class="card-link" href="${escHtml(a.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Xで開く</a>
         </div>
       </div>
     </div>
   `;
 }
 
+// --- modal ---
+const overlay = document.getElementById('modal-overlay');
+const modalContent = document.getElementById('modal-content');
+const modalPanel = document.getElementById('modal-panel');
+
+function openModal(article) {
+  const a = article;
+  const screenName = a.author_screen_name || '';
+  const authorName = a.author_name || screenName;
+  const avatarUrl = screenName ? `https://unavatar.io/twitter/${screenName}` : '';
+  const followersText = a.author_followers ? fmt(a.author_followers) + ' フォロワー' : '';
+
+  const tagsHtml = (a.tags || []).map(t =>
+    `<span class="modal-tag-badge">${escHtml(t)}</span>`
+  ).join('');
+
+  const translatedBadge = a.translated
+    ? `<span class="modal-translated-badge">EN→JP</span>`
+    : '';
+
+  const statsHtml = [
+    `<span class="modal-stat">${icons.heart} ${fmt(a.likes)} いいね</span>`,
+    `<span class="modal-stat">${icons.retweet} ${fmt(a.retweets)} RT</span>`,
+    a.bookmarks != null ? `<span class="modal-stat">${icons.bookmark} ${fmt(a.bookmarks)} BM</span>` : '',
+    a.views != null ? `<span class="modal-stat">${icons.eye} ${fmt(a.views)} 閲覧</span>` : '',
+  ].filter(Boolean).join('');
+
+  // 原文リンク (翻訳済みの場合)
+  const originalLinkHtml = a.translated
+    ? `<a class="modal-original-link" href="${escHtml(a.url)}" target="_blank" rel="noopener">
+        ${icons.external} 原文をXで見る
+      </a>`
+    : '';
+
+  modalContent.innerHTML = `
+    <h2 class="modal-title" id="modal-title-el">${escHtml(a.title || '(タイトルなし)')}</h2>
+
+    <div class="modal-meta">
+      ${avatarUrl ? `<img class="modal-avatar" src="${avatarUrl}" alt="${escHtml(authorName)}" onerror="this.style.display='none'">` : ''}
+      <div class="modal-author-info">
+        <div class="modal-author-name">${escHtml(authorName)}</div>
+        <div class="modal-author-sub">@${escHtml(screenName)}${followersText ? ` · ${followersText}` : ''}</div>
+      </div>
+    </div>
+
+    <div class="modal-badges">
+      <span class="modal-date">${formatDate(a.created_at)}</span>
+      ${tagsHtml}
+      ${translatedBadge}
+    </div>
+
+    ${statsHtml ? `<div class="modal-stats">${statsHtml}</div>` : ''}
+
+    <hr class="modal-divider">
+
+    ${a.body ? `<div class="modal-body-text">${escHtml(a.body)}</div>` : '<div class="modal-body-text" style="color:#9ca3af">本文なし</div>'}
+
+    <div class="modal-footer">
+      ${originalLinkHtml}
+      <a class="modal-open-btn" href="${escHtml(a.url)}" target="_blank" rel="noopener">
+        ${icons.external} Xで開く
+      </a>
+    </div>
+  `;
+
+  // reset scroll
+  modalPanel.scrollTop = 0;
+
+  // show
+  overlay.style.display = 'flex';
+  // force reflow for transition
+  overlay.offsetHeight;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  overlay.classList.add('fading-out');
+  overlay.classList.remove('open');
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    overlay.classList.remove('fading-out');
+    document.body.style.overflow = '';
+  }, 200);
+}
+
+// Close on overlay click (not modal itself)
+overlay.addEventListener('click', e => {
+  if (e.target === overlay) closeModal();
+});
+
+// Close button
+document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+
+// ESC key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+});
+
+// Card click → open modal
+document.getElementById('grid').addEventListener('click', e => {
+  const card = e.target.closest('.card');
+  if (!card) return;
+  // don't open if clicking a link inside
+  if (e.target.closest('a')) return;
+  const id = card.dataset.id;
+  const article = allArticles.find(a => a.id === id);
+  if (article) openModal(article);
+});
+
+// keyboard: Enter / Space on card
+document.getElementById('grid').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const card = e.target.closest('.card');
+  if (!card) return;
+  e.preventDefault();
+  const id = card.dataset.id;
+  const article = allArticles.find(a => a.id === id);
+  if (article) openModal(article);
+});
+
 // --- filter + sort ---
 function getFiltered() {
   let list = allArticles;
 
-  // tag filter (OR)
   if (activeTags.size > 0) {
     list = list.filter(a => {
       const tags = a.tags || [];
@@ -532,7 +915,6 @@ function getFiltered() {
     });
   }
 
-  // search (AND with tags)
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
     list = list.filter(a =>
@@ -543,7 +925,6 @@ function getFiltered() {
     );
   }
 
-  // sort
   list = [...list];
   if (currentSort === 'likes') list.sort((a, b) => (b.likes || 0) - (a.likes || 0));
   else if (currentSort === 'bookmarks') list.sort((a, b) => (b.bookmarks || 0) - (a.bookmarks || 0));
@@ -559,10 +940,8 @@ function render() {
   const total = allArticles.length;
   const shown = filtered.length;
 
-  // header count
   document.getElementById('total-count').textContent = `${total}件`;
 
-  // search count label
   const countEl = document.getElementById('search-count');
   if (searchQuery || activeTags.size > 0) {
     countEl.textContent = `${total}件中 ${shown}件`;
@@ -579,7 +958,6 @@ function render() {
 }
 
 // --- events ---
-// Tag bar: multi-select OR, "全て" deselects all
 document.getElementById('tag-bar').addEventListener('click', e => {
   const btn = e.target.closest('.tag-btn');
   if (!btn) return;
@@ -595,7 +973,6 @@ document.getElementById('tag-bar').addEventListener('click', e => {
     }
   }
 
-  // update UI
   document.querySelectorAll('.tag-btn').forEach(b => {
     if (b.dataset.tag === 'all') {
       b.classList.toggle('active', activeTags.size === 0);
