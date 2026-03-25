@@ -1,1020 +1,750 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI記事トレンド</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI記事トレンド</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  background: #f7f7f5;
-  color: #37352f;
-  font-size: 14px;
-  line-height: 1.6;
-  min-height: 100vh;
-}
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #f7f7f5;
+      color: #37352f;
+      min-height: 100vh;
+    }
 
-/* ===== HEADER ===== */
-.header {
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 14px 32px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.header-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.header-left h1 {
-  font-size: 17px;
-  font-weight: 600;
-  color: #37352f;
-  letter-spacing: -0.01em;
-}
-.header-left .subtitle {
-  font-size: 12px;
-  color: #6b7280;
-  margin-top: 1px;
-}
-.header-count {
-  font-size: 13px;
-  color: #6b7280;
-  white-space: nowrap;
-}
+    /* ── ヘッダー ── */
+    #site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #site-header .title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #37352f;
+    }
+    #site-header .meta {
+      font-size: 13px;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #site-header .meta .count-badge {
+      background: #f3f4f6;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-weight: 600;
+      color: #37352f;
+    }
 
-/* ===== SEARCH BAR ===== */
-.search-bar-wrapper {
-  background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 10px 32px;
-  position: sticky;
-  top: 61px;
-  z-index: 99;
-}
-.search-bar-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-}
-.search-input {
-  width: 100%;
-  padding: 8px 12px 8px 36px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background: #f7f7f5;
-  color: #37352f;
-  font-size: 14px;
-  font-family: 'Noto Sans JP', sans-serif;
-  outline: none;
-  transition: border-color 0.15s, background 0.15s;
-}
-.search-input:focus {
-  border-color: #9ca3af;
-  background: #ffffff;
-}
-.search-input::placeholder {
-  color: #9ca3af;
-}
-.search-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-  pointer-events: none;
-}
-.search-count {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 12px;
-  color: #9ca3af;
-  pointer-events: none;
-}
+    /* ── 検索バー ── */
+    #search-bar {
+      position: sticky;
+      top: 49px;
+      z-index: 99;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #search-bar .search-wrap {
+      position: relative;
+      flex: 1;
+    }
+    #search-bar .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      width: 16px;
+      height: 16px;
+      pointer-events: none;
+    }
+    #search-input {
+      width: 100%;
+      padding: 8px 12px 8px 38px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #37352f;
+      background: #f9fafb;
+      outline: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    #search-input:focus {
+      border-color: #37352f;
+      background: #fff;
+    }
+    #search-input::placeholder { color: #9ca3af; }
+    #search-count {
+      font-size: 13px;
+      color: #6b7280;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
 
-/* ===== CONTROLS ===== */
-.controls {
-  background: #f7f7f5;
-  padding: 12px 32px;
-}
-.controls-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+    /* ── タグバー ── */
+    #tag-bar {
+      position: sticky;
+      top: 101px;
+      z-index: 98;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #tag-bar::-webkit-scrollbar { display: none; }
+    .tag-btn {
+      flex-shrink: 0;
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      color: #6b7280;
+      font-size: 13px;
+      font-family: 'Noto Sans JP', sans-serif;
+      cursor: pointer;
+      transition: all 0.12s;
+      white-space: nowrap;
+    }
+    .tag-btn:hover { border-color: #9ca3af; color: #37352f; }
+    .tag-btn.active {
+      background: #37352f;
+      color: #fff;
+      border-color: #37352f;
+    }
+    .tag-bar-spacer { flex: 1; }
+    #sort-select {
+      flex-shrink: 0;
+      padding: 5px 10px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #37352f;
+      background: #fff;
+      cursor: pointer;
+      outline: none;
+    }
 
-/* Tag bar */
-.tag-bar {
-  flex: 1;
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.tag-bar::-webkit-scrollbar { display: none; }
+    /* ── カードグリッド ── */
+    #card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 20px;
+    }
+    @media (max-width: 1199px) {
+      #card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 767px) {
+      #card-grid { grid-template-columns: 1fr; padding: 12px; }
+    }
 
-.tag-btn {
-  padding: 4px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 20px;
-  background: #ffffff;
-  color: #6b7280;
-  font-size: 12px;
-  font-family: 'Noto Sans JP', sans-serif;
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.tag-btn:hover {
-  border-color: #9ca3af;
-  color: #37352f;
-}
-.tag-btn.active {
-  background: #37352f;
-  color: #ffffff;
-  border-color: #37352f;
-}
+    /* ── カード ── */
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: #d1d5db;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
 
-/* Sort */
-.sort-select {
-  flex-shrink: 0;
-  padding: 4px 10px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  background: #ffffff;
-  color: #37352f;
-  font-size: 12px;
-  font-family: 'Noto Sans JP', sans-serif;
-  cursor: pointer;
-  outline: none;
-  transition: border-color 0.15s;
-}
-.sort-select:focus {
-  border-color: #9ca3af;
-}
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #f3f4f6;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
+    }
+    .tag-badge.tag-claude { background: #fef3c7; color: #92400e; border-color: #fde68a; }
+    .tag-badge.tag-chatgpt { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+    .tag-badge.tag-gemini { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
+    .tag-badge.tag-cursor { background: #ede9fe; color: #5b21b6; border-color: #ddd6fe; }
+    .tag-badge.tag-openclaw { background: #fee2e2; color: #991b1b; border-color: #fecaca; }
+    .tag-badge.tag-ai { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
+    .tag-badge.tag-seisai { background: #fdf4ff; color: #7e22ce; border-color: #e9d5ff; }
 
-/* ===== GRID ===== */
-.grid {
-  max-width: 1200px;
-  margin: 0 auto 40px;
-  padding: 16px 32px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #37352f;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
-/* ===== CARD ===== */
-.card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
-  cursor: pointer;
-}
-.card:hover {
-  transform: translateY(-2px);
-  border-color: #9ca3af;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
+    .card-preview {
+      font-size: 13px;
+      color: #6b7280;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
-.card-tags {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-.tag-badge {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-  border: 1px solid #e5e7eb;
-  color: #6b7280;
-  background: #ffffff;
-}
+    .card-author {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .card-author img {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .card-author .author-name {
+      font-weight: 600;
+      color: #37352f;
+    }
+    .card-author .author-handle {
+      color: #9ca3af;
+    }
+    .card-author .author-followers {
+      margin-left: auto;
+      color: #9ca3af;
+      font-size: 12px;
+      white-space: nowrap;
+    }
 
-.card-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #37352f;
-  line-height: 1.45;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+    .card-divider {
+      border: none;
+      border-top: 1px solid #f3f4f6;
+      margin: 0;
+    }
 
-.card-body {
-  font-size: 13px;
-  color: #6b7280;
-  line-height: 1.55;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  flex: 1;
-}
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .card-footer .stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .card-footer .stat-icon { font-size: 12px; }
+    .card-footer .date {
+      margin-left: auto;
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    .card-footer .x-link {
+      font-size: 12px;
+      color: #6b7280;
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 4px 8px;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      transition: all 0.12s;
+    }
+    .card-footer .x-link:hover {
+      background: #37352f;
+      color: #fff;
+      border-color: #37352f;
+    }
 
-.card-author {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.author-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: #e5e7eb;
-}
-.author-info {
-  min-width: 0;
-}
-.author-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: #37352f;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.author-handle {
-  font-size: 11px;
-  color: #9ca3af;
-}
-.author-followers {
-  font-size: 11px;
-  color: #9ca3af;
-  margin-left: 4px;
-}
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 20px;
+      color: #9ca3af;
+      font-size: 15px;
+    }
 
-.card-divider {
-  border: none;
-  border-top: 1px solid #f3f4f6;
-  margin: 0;
-}
+    /* ── モーダル ── */
+    #modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.15s ease;
+    }
+    #modal-overlay.open {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-.card-stats {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 12px;
-  color: #9ca3af;
-  flex-wrap: wrap;
-}
-.stat {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-}
-.stat svg {
-  flex-shrink: 0;
-}
+    #modal-box {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 720px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideUp 0.15s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 640px) {
+      #modal-box {
+        width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+      }
+    }
 
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-.card-date {
-  font-size: 11px;
-  color: #9ca3af;
-}
-.card-links {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-.card-link {
-  font-size: 11px;
-  color: #9ca3af;
-  text-decoration: none;
-  border: 1px solid #e5e7eb;
-  border-radius: 4px;
-  padding: 3px 8px;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-.card-link:hover {
-  border-color: #9ca3af;
-  color: #37352f;
-}
+    .modal-close {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: flex-end;
+      padding: 12px 16px 0;
+      background: #fff;
+    }
+    .modal-close-btn {
+      background: none;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 13px;
+      color: #6b7280;
+      cursor: pointer;
+      font-family: 'Noto Sans JP', sans-serif;
+      transition: all 0.12s;
+    }
+    .modal-close-btn:hover {
+      background: #f3f4f6;
+      color: #37352f;
+    }
 
-/* ===== EMPTY / LOADING ===== */
-.empty {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 60px 20px;
-  color: #9ca3af;
-  font-size: 14px;
-}
-.loading {
-  max-width: 1200px;
-  margin: 60px auto;
-  padding: 0 32px;
-  text-align: center;
-  color: #9ca3af;
-}
+    .modal-cover {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      display: block;
+    }
 
-/* ===== MODAL OVERLAY ===== */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  /* fade in */
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-.modal-overlay.open {
-  display: flex;
-  opacity: 1;
-}
-.modal-overlay.fading-out {
-  opacity: 0;
-}
+    .modal-content {
+      padding: 20px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-/* ===== MODAL BODY ===== */
-.modal {
-  background: #ffffff;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 720px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  /* slide up */
-  transform: translateY(16px);
-  transition: transform 0.22s ease;
-  overscroll-behavior: contain;
-}
-.modal-overlay.open .modal {
-  transform: translateY(0);
-}
+    .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 
-/* scrollbar inside modal */
-.modal::-webkit-scrollbar { width: 6px; }
-.modal::-webkit-scrollbar-track { background: transparent; }
-.modal::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 3px; }
+    .modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #37352f;
+      line-height: 1.4;
+    }
 
-/* close button */
-.modal-close {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: flex-end;
-  padding: 14px 16px 0;
-  background: #ffffff;
-}
-.modal-close-btn {
-  width: 30px;
-  height: 30px;
-  border: none;
-  background: #f3f4f6;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6b7280;
-  transition: background 0.15s, color 0.15s;
-  flex-shrink: 0;
-}
-.modal-close-btn:hover {
-  background: #e5e7eb;
-  color: #37352f;
-}
+    .modal-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+    }
+    .modal-author img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .modal-author-info { display: flex; flex-direction: column; gap: 2px; }
+    .modal-author-name { font-weight: 600; color: #37352f; }
+    .modal-author-sub { font-size: 13px; color: #9ca3af; }
+    .modal-author-date { margin-left: auto; font-size: 13px; color: #9ca3af; white-space: nowrap; }
 
-/* modal content area */
-.modal-content {
-  padding: 8px 28px 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+    .modal-divider {
+      border: none;
+      border-top: 1px solid #e5e7eb;
+      margin: 0;
+    }
 
-.modal-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #37352f;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
-}
+    .modal-stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .modal-stat { display: flex; align-items: center; gap: 6px; }
+    .modal-stat .stat-label { font-size: 12px; color: #9ca3af; }
 
-.modal-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.modal-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #e5e7eb;
-  flex-shrink: 0;
-}
-.modal-author-info {
-  min-width: 0;
-  flex: 1;
-}
-.modal-author-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #37352f;
-}
-.modal-author-sub {
-  font-size: 12px;
-  color: #9ca3af;
-  margin-top: 1px;
-}
+    .modal-body {
+      font-size: 15px;
+      line-height: 1.9;
+      color: #37352f;
+    }
+    .modal-body p { margin: 0 0 12px; }
+    .modal-body br { display: block; content: ''; margin: 4px 0; }
 
-.modal-badges {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.modal-date {
-  font-size: 12px;
-  color: #9ca3af;
-}
-.modal-tag-badge {
-  font-size: 11px;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-  border: 1px solid #e5e7eb;
-  color: #6b7280;
-  background: #ffffff;
-}
-.modal-translated-badge {
-  font-size: 10px;
-  padding: 2px 7px;
-  border-radius: 4px;
-  font-weight: 600;
-  background: #fef3c7;
-  color: #92400e;
-  border: 1px solid #fde68a;
-  letter-spacing: 0.02em;
-}
-
-.modal-stats {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  font-size: 13px;
-  color: #6b7280;
-  padding: 12px 16px;
-  background: #f9fafb;
-  border-radius: 8px;
-  border: 1px solid #f3f4f6;
-}
-.modal-stat {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.modal-divider {
-  border: none;
-  border-top: 1px solid #f3f4f6;
-}
-
-.modal-body-text {
-  font-size: 15px;
-  color: #37352f;
-  line-height: 1.85;
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.modal-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding-top: 4px;
-}
-.modal-original-link {
-  font-size: 13px;
-  color: #6b7280;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  transition: color 0.15s;
-}
-.modal-original-link:hover {
-  color: #37352f;
-}
-.modal-open-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px 20px;
-  background: #37352f;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'Noto Sans JP', sans-serif;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 0.15s;
-}
-.modal-open-btn:hover {
-  background: #1a1915;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1199px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 767px) {
-  .header {
-    padding: 12px 16px;
-    top: 0;
-  }
-  .header-left h1 { font-size: 15px; }
-  .header-left .subtitle { display: none; }
-
-  .search-bar-wrapper {
-    padding: 8px 16px;
-    top: 53px;
-  }
-
-  .controls {
-    padding: 10px 16px;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-    padding: 12px 16px;
-    gap: 10px;
-  }
-
-  .card {
-    padding: 14px;
-  }
-  .card-title { font-size: 13px; }
-  .card-body { font-size: 12px; }
-  .card-stats { font-size: 11px; gap: 8px; }
-
-  /* mobile: full screen modal */
-  .modal-overlay {
-    padding: 0;
-    align-items: flex-end;
-  }
-  .modal {
-    max-width: 100%;
-    max-height: 96vh;
-    border-radius: 16px 16px 0 0;
-    transform: translateY(40px);
-  }
-  .modal-overlay.open .modal {
-    transform: translateY(0);
-  }
-  .modal-content {
-    padding: 4px 18px 32px;
-  }
-  .modal-title {
-    font-size: 17px;
-  }
-  .modal-body-text {
-    font-size: 14px;
-    line-height: 1.75;
-  }
-}
-</style>
+    .modal-open-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      background: #37352f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.12s;
+    }
+    .modal-open-btn:hover { opacity: 0.85; }
+  </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header-inner">
-    <div class="header-left">
-      <h1>AI記事トレンド</h1>
-      <div class="subtitle">Xでバズっているai系記事をまとめています</div>
-    </div>
-    <span class="header-count" id="total-count">読み込み中...</span>
+<!-- ヘッダー -->
+<header id="site-header">
+  <span class="title">AI記事トレンド</span>
+  <div class="meta">
+    <span id="header-updated"></span>
+    <span class="count-badge" id="header-count">0件</span>
   </div>
 </header>
 
-<!-- SEARCH BAR -->
-<div class="search-bar-wrapper">
-  <div class="search-bar-inner">
-    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+<!-- 検索バー -->
+<div id="search-bar">
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
     </svg>
-    <input type="text" class="search-input" id="search-input" placeholder="タイトル・本文・著者名で検索...">
-    <span class="search-count" id="search-count"></span>
+    <input type="search" id="search-input" placeholder="タイトル・本文・著者名で検索..." autocomplete="off">
   </div>
+  <span id="search-count"></span>
 </div>
 
-<!-- CONTROLS -->
-<div class="controls">
-  <div class="controls-inner">
-    <div class="tag-bar" id="tag-bar">
-      <button class="tag-btn active" data-tag="all">全て</button>
-      <button class="tag-btn" data-tag="OpenClaw">OpenClaw</button>
-      <button class="tag-btn" data-tag="Claude">Claude</button>
-      <button class="tag-btn" data-tag="ChatGPT">ChatGPT</button>
-      <button class="tag-btn" data-tag="Gemini">Gemini</button>
-      <button class="tag-btn" data-tag="Cursor">Cursor</button>
-      <button class="tag-btn" data-tag="Copilot">Copilot</button>
-      <button class="tag-btn" data-tag="Dify">Dify</button>
-      <button class="tag-btn" data-tag="生成AI">生成AI</button>
-      <button class="tag-btn" data-tag="AI">AI</button>
-    </div>
-    <select class="sort-select" id="sort-select">
-      <option value="likes">いいね順</option>
-      <option value="bookmarks">BM順</option>
-      <option value="retweets">RT順</option>
-      <option value="newest">新着順</option>
-    </select>
-  </div>
+<!-- タグバー -->
+<div id="tag-bar">
+  <button class="tag-btn active" data-tag="全て">全て</button>
+  <button class="tag-btn" data-tag="OpenClaw">OpenClaw</button>
+  <button class="tag-btn" data-tag="Claude">Claude</button>
+  <button class="tag-btn" data-tag="ChatGPT">ChatGPT</button>
+  <button class="tag-btn" data-tag="Gemini">Gemini</button>
+  <button class="tag-btn" data-tag="Cursor">Cursor</button>
+  <button class="tag-btn" data-tag="生成AI">生成AI</button>
+  <button class="tag-btn" data-tag="AI">AI</button>
+  <div class="tag-bar-spacer"></div>
+  <select id="sort-select">
+    <option value="likes">いいね順</option>
+    <option value="bookmarks">BM順</option>
+    <option value="retweets">RT順</option>
+    <option value="newest">新着順</option>
+  </select>
 </div>
 
-<!-- GRID -->
-<div class="grid" id="grid">
-  <div class="loading">データを読み込んでいます...</div>
-</div>
+<!-- カードグリッド -->
+<main id="card-grid"></main>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title-el">
-  <div class="modal" id="modal-panel">
+<!-- モーダル -->
+<div id="modal-overlay" role="dialog" aria-modal="true">
+  <div id="modal-box">
     <div class="modal-close">
-      <button class="modal-close-btn" id="modal-close-btn" aria-label="閉じる">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
+      <button class="modal-close-btn" id="modal-close-btn">× 閉じる</button>
     </div>
-    <div class="modal-content" id="modal-content">
-      <!-- filled by JS -->
-    </div>
+    <div id="modal-inner"></div>
   </div>
 </div>
 
 <script>
-let allArticles = [];
-let activeTags = new Set();
-let currentSort = 'likes';
-let searchQuery = '';
+  // ── ユーティリティ ──
+  function fmt(n) {
+    if (!n && n !== 0) return '-';
+    if (n >= 10000) return (n / 10000).toFixed(1) + '万';
+    if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+    return n.toLocaleString();
+  }
 
-// --- utils ---
-function fmt(n) {
-  if (!n) return '-';
-  n = Number(n);
-  if (n >= 10000) return (n / 10000).toFixed(1) + '万';
-  if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
-  return n.toLocaleString();
-}
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getDate()).padStart(2, '0')}`;
+  }
 
-function formatDate(iso) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}/${m}/${day}`;
-}
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
 
-function escHtml(s) {
-  return String(s || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
+  function formatBody(body) {
+    if (!body) return '';
+    return body.split('\n').map(line =>
+      line.trim() === '' ? '<br>' : `<p>${escapeHtml(line)}</p>`
+    ).join('');
+  }
 
-// --- icons ---
-const icons = {
-  heart: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
-  retweet: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>`,
-  bookmark: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`,
-  eye: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
-  external: `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`,
-};
+  function tagClass(tag) {
+    const map = {
+      'Claude': 'tag-claude',
+      'ChatGPT': 'tag-chatgpt',
+      'Gemini': 'tag-gemini',
+      'Cursor': 'tag-cursor',
+      'OpenClaw': 'tag-openclaw',
+      'AI': 'tag-ai',
+      '生成AI': 'tag-seisai',
+    };
+    return map[tag] || '';
+  }
 
-// --- render card ---
-function renderCard(a) {
-  const tags = (a.tags || []);
-  const tagsHtml = tags.map(t => `<span class="tag-badge">${escHtml(t)}</span>`).join('');
+  function renderTagBadges(tags) {
+    if (!tags || !tags.length) return '';
+    return tags.map(t => `<span class="tag-badge ${tagClass(t)}">${escapeHtml(t)}</span>`).join('');
+  }
 
-  const screenName = escHtml(a.author_screen_name || '');
-  const authorName = escHtml(a.author_name || screenName);
-  const avatarUrl = a.author_screen_name
-    ? `https://unavatar.io/twitter/${a.author_screen_name}`
-    : '';
+  // ── 状態 ──
+  let allArticles = [];
+  let filteredArticles = [];
+  let activeTag = '全て';
+  let searchQuery = '';
+  let sortMode = 'likes';
 
-  const followersText = a.author_followers ? fmt(a.author_followers) + ' フォロワー' : '';
+  // ── フィルタ & ソート ──
+  function applyFilters() {
+    const q = searchQuery.toLowerCase();
+    filteredArticles = allArticles.filter(a => {
+      const tagMatch = activeTag === '全て' || (a.tags && a.tags.includes(activeTag));
+      if (!tagMatch) return false;
+      if (!q) return true;
+      const haystack = [
+        a.title || '',
+        a.body || '',
+        a.author_name || '',
+        a.author_screen_name || '',
+      ].join(' ').toLowerCase();
+      return haystack.includes(q);
+    });
 
-  const statsHtml = [
-    `<span class="stat">${icons.heart} ${fmt(a.likes)}</span>`,
-    `<span class="stat">${icons.retweet} ${fmt(a.retweets)}</span>`,
-    a.bookmarks != null ? `<span class="stat">${icons.bookmark} ${fmt(a.bookmarks)}</span>` : '',
-    a.views != null ? `<span class="stat">${icons.eye} ${fmt(a.views)}</span>` : '',
-  ].filter(Boolean).join('');
+    // ソート
+    filteredArticles.sort((a, b) => {
+      if (sortMode === 'likes') return (b.likes || 0) - (a.likes || 0);
+      if (sortMode === 'bookmarks') return (b.bookmarks || 0) - (a.bookmarks || 0);
+      if (sortMode === 'retweets') return (b.retweets || 0) - (a.retweets || 0);
+      if (sortMode === 'newest') return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+      return 0;
+    });
 
-  const noteLink = a.note_url
-    ? `<a class="card-link" href="${escHtml(a.note_url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">note</a>`
-    : '';
+    renderCards();
+    updateCount();
+  }
 
-  return `
-    <div class="card" data-id="${escHtml(a.id)}" role="button" tabindex="0" aria-label="${escHtml(a.title || '記事を開く')}">
-      ${tagsHtml ? `<div class="card-tags">${tagsHtml}</div>` : ''}
-      <div class="card-title">${escHtml(a.title || '(タイトルなし)')}</div>
-      ${a.body ? `<div class="card-body">${escHtml(a.body)}</div>` : ''}
-      <div class="card-author">
-        ${avatarUrl ? `<img class="author-avatar" src="${avatarUrl}" alt="${authorName}" loading="lazy" onerror="this.style.display='none'">` : ''}
-        <div class="author-info">
-          <div class="author-name">${authorName}</div>
-          <div class="author-handle">@${screenName}${followersText ? `<span class="author-followers">· ${followersText}</span>` : ''}</div>
-        </div>
-      </div>
-      <hr class="card-divider">
-      <div class="card-stats">${statsHtml}</div>
-      <div class="card-footer">
-        <span class="card-date">${formatDate(a.created_at)}</span>
-        <div class="card-links">
-          ${noteLink}
-          <a class="card-link" href="${escHtml(a.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Xで開く</a>
-        </div>
-      </div>
-    </div>
-  `;
-}
+  function updateCount() {
+    const total = allArticles.length;
+    const shown = filteredArticles.length;
+    document.getElementById('search-count').textContent = `${total}件中 ${shown}件表示`;
+  }
 
-// --- modal ---
-const overlay = document.getElementById('modal-overlay');
-const modalContent = document.getElementById('modal-content');
-const modalPanel = document.getElementById('modal-panel');
+  // ── カード描画 ──
+  function renderCards() {
+    const grid = document.getElementById('card-grid');
+    if (!filteredArticles.length) {
+      grid.innerHTML = '<div class="no-results">該当する記事が見つかりませんでした</div>';
+      return;
+    }
 
-function openModal(article) {
-  const a = article;
-  const screenName = a.author_screen_name || '';
-  const authorName = a.author_name || screenName;
-  const avatarUrl = screenName ? `https://unavatar.io/twitter/${screenName}` : '';
-  const followersText = a.author_followers ? fmt(a.author_followers) + ' フォロワー' : '';
+    grid.innerHTML = filteredArticles.map((a, i) => {
+      const tags = renderTagBadges(a.tags);
+      const preview = (a.preview || '').replace(/\n/g, ' ').substring(0, 120);
+      const date = fmtDate(a.created_at);
+      const handle = a.author_screen_name || '';
+      const avatarSrc = handle ? `https://unavatar.io/twitter/${handle}` : '';
 
-  const tagsHtml = (a.tags || []).map(t =>
-    `<span class="modal-tag-badge">${escHtml(t)}</span>`
-  ).join('');
+      return `
+        <article class="card" data-index="${i}" tabindex="0" role="button" aria-label="${escapeHtml(a.title || '')}">
+          <div class="card-tags">${tags}</div>
+          <div class="card-title">${escapeHtml(a.title || '')}</div>
+          <div class="card-preview">${escapeHtml(preview)}</div>
+          <div class="card-author">
+            ${avatarSrc ? `<img src="${avatarSrc}" width="28" height="28" alt="${escapeHtml(a.author_name || '')}" loading="lazy" onerror="this.style.display='none'">` : ''}
+            <span class="author-name">${escapeHtml(a.author_name || '')}</span>
+            <span class="author-handle">@${escapeHtml(handle)}</span>
+            <span class="author-followers">${fmt(a.author_followers)}フォロワー</span>
+          </div>
+          <hr class="card-divider">
+          <div class="card-footer">
+            <span class="stat"><span class="stat-icon">♡</span>${fmt(a.likes)}</span>
+            <span class="stat">RT ${fmt(a.retweets)}</span>
+            <span class="stat">BM ${fmt(a.bookmarks)}</span>
+            <span class="date">${date}</span>
+            <a class="x-link" href="${escapeHtml(a.url || '#')}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Xで開く →</a>
+          </div>
+        </article>
+      `;
+    }).join('');
 
-  const translatedBadge = a.translated
-    ? `<span class="modal-translated-badge">EN→JP</span>`
-    : '';
-
-  const statsHtml = [
-    `<span class="modal-stat">${icons.heart} ${fmt(a.likes)} いいね</span>`,
-    `<span class="modal-stat">${icons.retweet} ${fmt(a.retweets)} RT</span>`,
-    a.bookmarks != null ? `<span class="modal-stat">${icons.bookmark} ${fmt(a.bookmarks)} BM</span>` : '',
-    a.views != null ? `<span class="modal-stat">${icons.eye} ${fmt(a.views)} 閲覧</span>` : '',
-  ].filter(Boolean).join('');
-
-  // 原文リンク (翻訳済みの場合)
-  const originalLinkHtml = a.translated
-    ? `<a class="modal-original-link" href="${escHtml(a.url)}" target="_blank" rel="noopener">
-        ${icons.external} 原文をXで見る
-      </a>`
-    : '';
-
-  modalContent.innerHTML = `
-    <h2 class="modal-title" id="modal-title-el">${escHtml(a.title || '(タイトルなし)')}</h2>
-
-    <div class="modal-meta">
-      ${avatarUrl ? `<img class="modal-avatar" src="${avatarUrl}" alt="${escHtml(authorName)}" onerror="this.style.display='none'">` : ''}
-      <div class="modal-author-info">
-        <div class="modal-author-name">${escHtml(authorName)}</div>
-        <div class="modal-author-sub">@${escHtml(screenName)}${followersText ? ` · ${followersText}` : ''}</div>
-      </div>
-    </div>
-
-    <div class="modal-badges">
-      <span class="modal-date">${formatDate(a.created_at)}</span>
-      ${tagsHtml}
-      ${translatedBadge}
-    </div>
-
-    ${statsHtml ? `<div class="modal-stats">${statsHtml}</div>` : ''}
-
-    <hr class="modal-divider">
-
-    ${a.body ? `<div class="modal-body-text">${escHtml(a.body)}</div>` : '<div class="modal-body-text" style="color:#9ca3af">本文なし</div>'}
-
-    <div class="modal-footer">
-      ${originalLinkHtml}
-      <a class="modal-open-btn" href="${escHtml(a.url)}" target="_blank" rel="noopener">
-        ${icons.external} Xで開く
-      </a>
-    </div>
-  `;
-
-  // reset scroll
-  modalPanel.scrollTop = 0;
-
-  // show
-  overlay.style.display = 'flex';
-  // force reflow for transition
-  overlay.offsetHeight;
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  overlay.classList.add('fading-out');
-  overlay.classList.remove('open');
-  setTimeout(() => {
-    overlay.style.display = 'none';
-    overlay.classList.remove('fading-out');
-    document.body.style.overflow = '';
-  }, 200);
-}
-
-// Close on overlay click (not modal itself)
-overlay.addEventListener('click', e => {
-  if (e.target === overlay) closeModal();
-});
-
-// Close button
-document.getElementById('modal-close-btn').addEventListener('click', closeModal);
-
-// ESC key
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
-});
-
-// Card click → open modal
-document.getElementById('grid').addEventListener('click', e => {
-  const card = e.target.closest('.card');
-  if (!card) return;
-  // don't open if clicking a link inside
-  if (e.target.closest('a')) return;
-  const id = card.dataset.id;
-  const article = allArticles.find(a => a.id === id);
-  if (article) openModal(article);
-});
-
-// keyboard: Enter / Space on card
-document.getElementById('grid').addEventListener('keydown', e => {
-  if (e.key !== 'Enter' && e.key !== ' ') return;
-  const card = e.target.closest('.card');
-  if (!card) return;
-  e.preventDefault();
-  const id = card.dataset.id;
-  const article = allArticles.find(a => a.id === id);
-  if (article) openModal(article);
-});
-
-// --- filter + sort ---
-function getFiltered() {
-  let list = allArticles;
-
-  if (activeTags.size > 0) {
-    list = list.filter(a => {
-      const tags = a.tags || [];
-      return [...activeTags].some(t => tags.includes(t));
+    // カードクリック
+    grid.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', () => {
+        const idx = parseInt(card.dataset.index, 10);
+        openModal(filteredArticles[idx]);
+      });
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const idx = parseInt(card.dataset.index, 10);
+          openModal(filteredArticles[idx]);
+        }
+      });
     });
   }
 
-  if (searchQuery) {
-    const q = searchQuery.toLowerCase();
-    list = list.filter(a =>
-      (a.title || '').toLowerCase().includes(q) ||
-      (a.body || '').toLowerCase().includes(q) ||
-      (a.author_name || '').toLowerCase().includes(q) ||
-      (a.author_screen_name || '').toLowerCase().includes(q)
-    );
+  // ── モーダル ──
+  function openModal(a) {
+    const overlay = document.getElementById('modal-overlay');
+    const inner = document.getElementById('modal-inner');
+    const handle = a.author_screen_name || '';
+    const avatarSrc = handle ? `https://unavatar.io/twitter/${handle}` : '';
+    const date = fmtDate(a.created_at);
+
+    inner.innerHTML = `
+      ${a.cover_url ? `<img class="modal-cover" src="${escapeHtml(a.cover_url)}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
+      <div class="modal-content">
+        <div class="modal-tags">${renderTagBadges(a.tags)}</div>
+        <h2 class="modal-title">${escapeHtml(a.title || '')}</h2>
+        <div class="modal-author">
+          ${avatarSrc ? `<img src="${avatarSrc}" width="36" height="36" alt="${escapeHtml(a.author_name || '')}" onerror="this.style.display='none'">` : ''}
+          <div class="modal-author-info">
+            <span class="modal-author-name">${escapeHtml(a.author_name || '')}</span>
+            <span class="modal-author-sub">@${escapeHtml(handle)} &nbsp;·&nbsp; ${fmt(a.author_followers)}フォロワー</span>
+          </div>
+          <span class="modal-author-date">${date}</span>
+        </div>
+        <hr class="modal-divider">
+        <div class="modal-stats">
+          <span class="modal-stat"><span class="stat-label">いいね</span> ♡ ${fmt(a.likes)}</span>
+          <span class="modal-stat"><span class="stat-label">RT</span> ${fmt(a.retweets)}</span>
+          <span class="modal-stat"><span class="stat-label">BM</span> ${fmt(a.bookmarks)}</span>
+          ${a.views ? `<span class="modal-stat"><span class="stat-label">閲覧</span> ${fmt(a.views)}</span>` : ''}
+        </div>
+        <hr class="modal-divider">
+        <div class="modal-body">${formatBody(a.body)}</div>
+        <hr class="modal-divider">
+        <a class="modal-open-btn" href="${escapeHtml(a.url || '#')}" target="_blank" rel="noopener">Xで元記事を開く →</a>
+      </div>
+    `;
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // モーダル内スクロール位置リセット
+    document.getElementById('modal-box').scrollTop = 0;
   }
 
-  list = [...list];
-  if (currentSort === 'likes') list.sort((a, b) => (b.likes || 0) - (a.likes || 0));
-  else if (currentSort === 'bookmarks') list.sort((a, b) => (b.bookmarks || 0) - (a.bookmarks || 0));
-  else if (currentSort === 'retweets') list.sort((a, b) => (b.retweets || 0) - (a.retweets || 0));
-  else if (currentSort === 'newest') list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-  return list;
-}
-
-// --- render ---
-function render() {
-  const filtered = getFiltered();
-  const total = allArticles.length;
-  const shown = filtered.length;
-
-  document.getElementById('total-count').textContent = `${total}件`;
-
-  const countEl = document.getElementById('search-count');
-  if (searchQuery || activeTags.size > 0) {
-    countEl.textContent = `${total}件中 ${shown}件`;
-  } else {
-    countEl.textContent = '';
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
   }
 
-  const grid = document.getElementById('grid');
-  if (filtered.length === 0) {
-    grid.innerHTML = '<div class="empty">記事が見つかりませんでした</div>';
-    return;
-  }
-  grid.innerHTML = filtered.map(renderCard).join('');
-}
-
-// --- events ---
-document.getElementById('tag-bar').addEventListener('click', e => {
-  const btn = e.target.closest('.tag-btn');
-  if (!btn) return;
-  const tag = btn.dataset.tag;
-
-  if (tag === 'all') {
-    activeTags.clear();
-  } else {
-    if (activeTags.has(tag)) {
-      activeTags.delete(tag);
-    } else {
-      activeTags.add(tag);
-    }
-  }
-
-  document.querySelectorAll('.tag-btn').forEach(b => {
-    if (b.dataset.tag === 'all') {
-      b.classList.toggle('active', activeTags.size === 0);
-    } else {
-      b.classList.toggle('active', activeTags.has(b.dataset.tag));
-    }
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  });
+  document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
   });
 
-  render();
-});
-
-document.getElementById('sort-select').addEventListener('change', e => {
-  currentSort = e.target.value;
-  render();
-});
-
-let searchTimer;
-document.getElementById('search-input').addEventListener('input', e => {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
+  // ── イベントリスナー ──
+  document.getElementById('search-input').addEventListener('input', e => {
     searchQuery = e.target.value.trim();
-    render();
-  }, 150);
-});
-
-// --- load ---
-function init(articles) {
-  allArticles = Array.isArray(articles) ? articles : [];
-  render();
-}
-
-fetch('site_data.json')
-  .then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.json();
-  })
-  .then(data => init(data))
-  .catch(err => {
-    document.getElementById('grid').innerHTML =
-      `<div class="empty">データの読み込みに失敗しました: ${escHtml(err.message)}</div>`;
-    document.getElementById('total-count').textContent = 'エラー';
+    applyFilters();
   });
+
+  document.querySelectorAll('.tag-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTag = btn.dataset.tag;
+      applyFilters();
+    });
+  });
+
+  document.getElementById('sort-select').addEventListener('change', e => {
+    sortMode = e.target.value;
+    applyFilters();
+  });
+
+  // ── データ読み込み ──
+  fetch('site_data.json')
+    .then(r => r.json())
+    .then(data => {
+      allArticles = data;
+
+      // ヘッダー更新日
+      const dates = data.map(a => a.collected_at || a.created_at).filter(Boolean).sort().reverse();
+      if (dates.length) {
+        const latest = dates[0].substring(0, 10);
+        document.getElementById('header-updated').textContent = `最終更新: ${latest.replace(/-/g, '/')}`;
+      }
+      document.getElementById('header-count').textContent = `${data.length}件`;
+
+      applyFilters();
+    })
+    .catch(err => {
+      console.error('データ読み込みエラー:', err);
+      document.getElementById('card-grid').innerHTML =
+        '<div class="no-results">データの読み込みに失敗しました</div>';
+    });
 </script>
 </body>
 </html>
