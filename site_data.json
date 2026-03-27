@@ -1,5 +1,63 @@
 [
   {
+    "id": "2037309228176597031",
+    "title": "AIエッセイ生成",
+    "body": "In real time just watched a girl put her essay instructions into ChatGPT, copy its response, paste it into her Microsoft word, and then close her computer and take selfies on SnapChat",
+    "preview": "In real time just watched a girl put her essay instructions into ChatGPT, copy its response, paste it into her Microsoft word, and then close her computer and take selfies on SnapChat",
+    "cover_url": "",
+    "url": "https://x.com/vuse_lover/status/2037309228176597031",
+    "author_name": "mollie :3",
+    "author_screen_name": "vuse_lover",
+    "author_followers": 79411,
+    "likes": 26741,
+    "retweets": 342,
+    "bookmarks": 494,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": true,
+    "original_title": "In real time just watched a girl put her essay instructions into ChatGPT, copy its response, past...",
+    "lang": "en",
+    "tags": [
+      "ChatGPT",
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037308986656018841",
+    "title": "ChatGPTバスケでコートへ、シュ",
+    "body": "Pulling up to the court with the ChatGPT basketball and just asking some other guy to shoot for me",
+    "preview": "Pulling up to the court with the ChatGPT basketball and just asking some other guy to shoot for me",
+    "cover_url": "",
+    "url": "https://x.com/ShyBucketGetter/status/2037308986656018841",
+    "author_name": "Shaun Johnson",
+    "author_screen_name": "ShyBucketGetter",
+    "author_followers": 40358,
+    "likes": 8707,
+    "retweets": 297,
+    "bookmarks": 191,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": true,
+    "original_title": "Pulling up to the court with the ChatGPT basketball and just asking some other guy to shoot for me",
+    "lang": "en",
+    "tags": [
+      "ChatGPT",
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
     "id": "2034466595595256130",
     "title": "Claude code使ったら完全自動で3万稼げてた件。",
     "body": "なんかClaude codeでThreads完全自動で回してたら、\n\n2週間で3万の利益を作ってましたwww（ちなみに承認率保証ある案件なので、まあほぼ確定で30,000円入ってきます🥺）\n\n \n\n「流石に、こんなちょろくていいのか？🥺」\n\nと思ったのが正直な感想です、、、\n\nしかも、まだ叩き台で作っただけなので、ここからもっと作り込めば月300万ぐらいは作れそうな気はしています。\n\nただし、\n\nもちろんそんないい側面ばっかではなく、\n\n完全自動運用をするにあたり、\n\nアカウント1個凍結させたりもしましたw\n\nそこで、この記事では、\n\n・どんな設計で作ってるのか\n・どういうマネタイズ方法なのか\n・各エージェントに何をさせているのか\n\nなどを詳しく赤裸々に公開していこうと思います。\n\n先にちょい宣伝\n\nちなみに3/26〜28にThreads×AI攻略セミナー（無料） やります。CursorとかClaude Codeを使ってThreadsをどう攻略するか、って話をガッツリやる回です。この記事読んで「面白いな〜」ってなった人はぜひ。\n\n👉 https://leather-face-d04.notion.site/2550f8fe3f9380eb947de8d4aab64d1c\n\nなんでThreadsなのか\n\nまず前提として、なんでThreadsで自動化したのかって話なんですけど、シンプルにThreadsが一番イージーだからです。\n\n（あと、僕自身はThreadsで2億ほど稼いでおり、万垢も7個持ってて、累計フォロワー数も15万を超えており、シンプルにThreadsが得意だからですww）\n\nXはフォロワーいないと基本誰にも届かない。インスタはリール地獄。TikTokは動画編集。\n\nでもThreadsだけ、フォロワー0でもテキストだけでバズれる。\n\n嘘みたいな話なんですけど、うちの講座生で1日で1万フォロワー増えた人いますし、1週間で5万フォロワーいった子もいます。アルゴリズムがフォロワー外にガンガン拡散してくれるので、新規アカウントでもちゃんと伸びるんですよね。\n\nで、テキストベースってことは、AIとの相性がえぐいです。\n\n画像も動画もいらない。テキストだけ。テキスト生成なんてAIが一番得意なやつじゃないですか。つまり「リサーチから投稿までAIに全部やらせる」が一番成立しやすいのがThreads。\n\n他のSNSだとこうはいかないです。インスタは画像がいるし、YouTubeは動画がいるし、TikTokも動画。テキストだけで完結するThreadsだからこそ、完全自動化が現実的になった。\n\nだから自動化するならThreads一択でした。\n\nClaude Codeの話\n\nで、自動化に使ったのがClaude Code。\n\nこれ何かっていうと、ターミナル上で動くAIです。普通のAIチャットと何が違うかっていうと、ファイル操作もコマンド実行もブラウザ操作も全部やってくれるところ。\n\n普通のAIは質問したら答えが返ってくるだけですけど、Claude Codeは「これやって」って言ったら 本当にやる。\n\nファイル作って、コード書いて、実行して、エラー出たら自分で直して、もう一回実行する。ここまで全部自動です。\n\nで、ターミナルで動くってことは、シェルスクリプトとかcronとか、既存の自動化の仕組みと全部繋がるんですよね。これがでかい。\n\n「AIに考えてもらう」じゃなくて「AIに働いてもらう」。この感覚が一番近いです。\n\n6つのAIエージェントで何をやってるか\n\nここからが本題です。\n\n転職系のThreadsアカウントを完全自動運用してるんですけど、6つのAIエージェントにそれぞれ仕事を振り分けてます。\n\n1. リサーチャー：ネタ収集\n2.アナリスト：投稿パフォーマンス分析\n3. ライター：投稿の自動生成\n4. ポスター：Threads APIで投稿実行\n5. フェッチャー：閲覧数・いいね等のデータ取得\n6. スーパーバイザー：全体の監視・異常検知\n\n↓イメージはこんな感じです。\n\n \n\nそれぞれ解説していきます。\n\n1つのAIに全部やらせるとパンクするんですよ。リサーチしながら投稿も書いて分析もして、ってやると、どこかで精度が落ちる。\n\nだから「1エージェント＝1つの仕事」にしてます。人間の会社と同じですね。営業と経理と開発を1人にやらせたら終わるのと一緒。\n\nエージェント① リサーチャー（ネタ収集担当）\n\nYouTubeやXから最新のネタを自動で拾ってくるやつです。\n\n例えば転職アカウントなら「面接 落ちる理由」「年収交渉 失敗」みたいなキーワードでYouTubeを検索して、動画の文字起こしを全部読んで、使えるネタだけ抽出してJSONにまとめてくれます。\n\nポイントは、テーマツリーっていうのを事前に作ってあって、「転職準備」「面接攻略」「年収交渉」「エージェント活用」みたいな大カテゴリの下に細かいノードがぶら下がってる。リサーチャーはこのツリーを見て「今どのテーマのネタが足りてないか」を判断して、足りないところを重点的に調べてくれます。\n\n人間が「次何調べよう」って考えなくていい。勝手にやってくれます。\n\nエージェント② アナリスト（分析担当）\n\n過去の投稿データを見て「何が伸びて、何が伸びなかったか」を分析するやつです。\n\nThreads APIから取ってきた閲覧数、いいね数、リプライ数を全部見て、「この型の投稿は伸びやすい」「このテーマは反応が薄い」みたいな分析結果を出してくれます。\n\nで、ここが面白いんですけど、分析結果をそのまま次のライターへの指示書として書き出すんですよね。「断言型の1行目が最近伸びてるから、次のバッチでは断言型を多めに」「エージェント批判系はもう飽きられてるからしばらく控えて」みたいな。\n\nAIがAIにフィードバックを出してる。 人間がやってることと同じことを、AIだけで回してるんです。\n\nエージェント③ ライター（投稿作成担当）\n\nこれがメインエンジンですね。リサーチャーが集めたネタと、アナリストのフィードバックを読んで、実際の投稿を作ります。\n\n1回のバッチで5〜10本の投稿を一気に生成するんですけど、ただ作るだけじゃなくて、かなり細かいルールを守らせてます。\n\nまず、投稿パターンが15種類以上ある。 短文完結、コメント誘導型、ツリー展開型。それぞれの中にさらに「暴露系」「需要確認型」「リスト系」みたいな細分化がある。ライターは直近3件で使ったパターンを避けて、自動でローテーションします。\n\n次に、1行目のパターン集を参照させてる。 実際にバズった投稿の1行目を265件以上ストックしてあって、そこから構造だけ学んで、自分のジャンルに変換して書く。1行目は投稿の命なので、ここは妥協しないです。\n\nで、書き終わったら自己採点。フックの強さ、有益性、具体性、テンポ感、ペルソナ一致度。10項目で各10点満点で採点して、平均7.0以上じゃないとキューに入れない。7.0未満は書き直し。2回書き直してもダメなら棄却。\n\nさらに、過去100件の投稿と類似度チェックして、似すぎてたら棄却。これがないと地獄を見ます。（後で話します。）\n\nエージェント④ ポスター（投稿実行担当）\n\nキューに入った投稿を、Threads APIを使って実際に投稿するやつです。\n\ncronで1日10回のタイムスロットに分散して投稿してます。朝8時から夜中1時まで、大体2時間おきくらい。\n\n単純に投稿するだけじゃなくて、投稿タイプによって挙動が変わります。コメント誘導型なら本文を投稿した後にコメント欄に続きを自動で書く。ツリー型なら返信で繋げていく。アフィリエイト投稿ならコメント欄にPRリンクを自動配置。\n\n全部自動です。\n\nエージェント⑤ フェッチャー（データ取得担当）\n\n投稿した後、24時間後くらいにThreads APIからメトリクス（閲覧数、いいね、リプライ）を自動で取ってきて、投稿履歴に追記するやつです。\n\nこれがないとアナリストが分析できないので、地味だけど超重要。データがないと改善サイクルが回らないですから。\n\nエージェント⑥ スーパーバイザー（監視担当）\n\n全体の異常検知です。エラーが3回連続で起きたら自動停止するし、投稿が予定通り実行されてなかったら通知する。\n\nあと、KILL_SWITCHっていう緊急停止機能があって、ヤバいと思ったら全アカウントの投稿を一発で止められるようにしてます。\n\n---\n\nこの6つが毎日自動で回ってます。\n\n朝、シェルスクリプト1個叩くだけ。フェッチャーが昨日のデータ取ってきて、アナリストが分析して、リサーチャーがネタ補充して、ライターが10本書いて、ポスターがcronで分散投稿。\n\n収益化はASP系のアフィリエイトです。最初はnoteとか自分の商品を売ろうかなと思ったんですけど、ASPアフィの方が楽なんですよね。商品作らなくていいし。投稿本文は普通の有益投稿で、コメント欄にさりげなくPRリンクを置く。これも全部ライターとポスターが自動でやってくれます。\n\n設計で意識した4つのこと\n\nちょっとここからは設計の話をさせてください。\n\n自動化って「動けばOK」じゃなくて、設計ミスると普通に事故ります。 これは後の失敗談で身をもって証明します。\n\n意識したのは4つ。\n\n① エージェント分離\n\nさっき話した通り、1エージェント＝1タスク。これは鉄則です。\n\n② ナレッジとロジックの分離\n\nアカウントの口調、NGワード、投稿パターン、ターゲット情報。全部外部ファイルに切り出してます。コードに人格をハードコードしない。\n\nこれめちゃくちゃ大事で、こうしておくとナレッジファイルを差し替えるだけで 転職でも美容でもママ向けでも、どんなジャンルでも同じシステムが動きます。 新しいアカウント追加する時も、テンプレートコピーしてナレッジ埋めるだけ。\n\n③ 状態管理\n\n投稿履歴、キュー、読者分析。全部JSONで管理してます。AIが「昨日何を投稿したか」「どのテーマが伸びてるか」「読者がどんな質問をコメントしてきたか」を覚えてる状態。\n\nこれがないと文脈がリセットされて、毎回ゼロから投稿を作ることになる。そうすると同じ投稿を延々とループします。（やらかしました。後述。）\n\n④ 安全装置\n\n品質スコア7.0未満は自動棄却。過去投稿との類似度0.85以上も棄却。1日の投稿上限15件。最低投稿間隔1時間。そして緊急停止スイッチ。\n\n「AIに任せる」と「AIを放置する」は全然違います。 任せるけど、手綱はちゃんと握る。ここの設計をサボると、次に話す地獄が待ってます。\n\n大事故その1：1分で10連投してアカウント凍結\n\nはい。やらかしました。\n\n自動投稿の間隔設定をミスって、1分で10投稿ぶちこんだ。\n\n1分で10投稿ですよ。\n\n人間がやったらまず不可能な速度です。Threads側から見たら一発でbot判定されるやつ。\n\n結果、アカウント凍結。\n\nいや当たり前なんですよねwww\n\n冷静に考えて1分で10投稿する人間いないですから。自動化の敵は「遅すぎる」じゃなく 「速すぎる」 なんですよ。人間っぽさを残さないと、プラットフォーム側に殴られる。\n\nここで学んだのは、AIの処理速度をそのまま使っちゃダメだってことです。AIは1秒で10投稿作れるけど、それをそのまま投稿したら終わり。人間のリズムに合わせないといけない。\n\n対策として、最低1時間は投稿間隔を空けるようにして、1日10回のタイムスロットに分散させました。朝8時から夜中1時まで、2時間おきくらいに1本ずつ出す。これなら手動投稿と見分けがつかないです。\n\n教訓：AIの速度をそのまま使うな。人間のスピードに合わせろ。\n\n大事故その2：同じ投稿を30回ループ\n\nこっちの方がひどいです。\n\nある日、ふとアカウントの投稿一覧を見たんですよ。\n\n「転職エージェントに騙されるな」\n\n「転職エージェントに騙されるな」\n\n「転職エージェントに騙されてる人多すぎ」\n\n「転職エージェントの裏側教えます」\n\n「転職エージェントに騙されるな」\n\nお前はbotか。\n\nbotなんですけど。\n\nいや、AIが毎回「新しい投稿です」って自信満々に出してくるんですよ。でも中身ほぼ同じ。1行目の表現がちょっと違うだけで、言ってることは全部「エージェントに騙されるな」。30投稿くらいずっとこれ。\n\nフォロワーから見たら、壊れたラジオがずっと同じ曲流してるようなもんです。\n\n原因は類似度チェックがなかったこと。\n\nAIに「新しい投稿作って」って言うだけだと、一番\"それっぽい\"ものを毎回出してくるんですよね。転職ジャンルで一番反応が取れそうなのが「エージェント批判系」だから、AIからすると毎回正解を出してるつもり。でも同じ正解を30回出されたらただの壊れたbotです。\n\nこれはAIの特性をちゃんと理解してなかった自分の設計ミスでした。AIは放っておくと最適解に収束する。 人間みたいに「さすがに同じネタ飽きたな」とか思わない。永遠に同じ最適解を出し続ける。\n\n対策として、\n\n過去100件の投稿と類似度を比較して、0.85以上は自動棄却\n\n直近3件と同じ構造パターンは使えない仕組み\n\n15種類以上の投稿パターンを強制ローテーション\n\nテーマも同じものが3回連続したら自動で別テーマに切り替え\n\nこれ全部入れてから、ようやくまともなアカウントに見えるようになりました。\n\n今どうなってるか\n\n事故を2つ経験して、今はこうなってます。\n\n3アカウント並行運用（転職・美容・ママ向け・SNS運用 etc）\n\nナレッジファイルを差し替えるだけでジャンル切り替え\n\n投稿の品質スコア自動採点（7.0未満は自動で弾く）\n\nバズった投稿から関連投稿を3本自動で派生生成（バズピボットって呼んでます）\n\n読者のコメントや反応を分析して、次の投稿テーマに自動反映\n\n緊急停止スイッチで全アカウント即停止可能\n\n人間がやってるのは、戦略の判断だけ。\n\n「このアカウントはこういう方向性で」「このジャンルのナレッジを追加して」みたいな上流の意思決定だけです。\n\n投稿の執筆、スケジュール、品質管理、パフォーマンス分析、改善。全部AIが回してます。\n\nで、冒頭の3万円。\n\n正直、金額としてはまだ小さいです。でも大事なのは金額じゃなくて、自分が1秒も手を動かしてないってこと。\n\n寝てる間に投稿されて、寝てる間にリンクがクリックされて、寝てる間に成果が発生してた。\n\nこれが1アカウントで3万。ナレッジの精度を上げてバズ率が上がったら？アカウントを増やしたら？\n\nそういうゲームになってるんですよね、もう。\n\nSNS運用の未来は、たぶんこっち側\n\nふざけた話ばっかしてきましたけど、最後だけ真面目に言います。\n\nSNS運用の未来は「AIに作業させて、人間は判断だけする」になると本気で思ってます。\n\n毎日投稿ネタ考えて、文章書いて、投稿して、数字見て、改善して——これを全部人間がやる時代はもう終わりです。少なくとも僕の中では終わってます。\n\n人間がやるべきなのは「誰に、何を、なぜ届けるか」を決めること。方向性を決めて、ナレッジを整えて、戦略を考えること。\n\n作業はAIでいい。\n\n今回の「寝てる間に3万」は、その実験結果の第一歩です。\n\nまだまだ事故もするし、改善点だらけです。でも、この方向が間違ってるとは全く思ってないです。\n\nということで、3/26〜28にThreads×AI攻略セミナー（無料）やります。\n\nCursorやClaude Codeを使って、Threadsをどう攻略するか。この記事で話した自動化の仕組みだけじゃなく、投稿のクオリティを上げるAIの使い方、リサーチの回し方、ナレッジの設計まで全部話します。\n\nこの記事読んで「ちょっと気になるな」って思った人は覗きに来てください。無料なので！！！！\n\n👉 https://leather-face-d04.notion.site/2550f8fe3f9380eb947de8d4aab64d1c",
@@ -24,7 +82,41 @@
       "Claude",
       "Cursor",
       "AI"
-    ]
+    ],
+    "date": "2026-03-19",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
+  },
+  {
+    "id": "2037479220126134436",
+    "title": "なんとAppleがSiriにClaudeとChatGPTとGeminiを全て統合すると発表。",
+    "body": "なんとAppleがSiriにClaudeとChatGPTとGeminiを全て統合すると発表。\niPhoneが全部入りになるということ。自社でAIを作らなかった理由はこういうことだったのか。 https://t.co/mdjfMZYwPz",
+    "preview": "なんとAppleがSiriにClaudeとChatGPTとGeminiを全て統合すると発表。 iPhoneが全部入りになるということ。自社でAIを作らなかった理由はこういうことだったのか。 https://t.co/mdjfMZYwPz",
+    "cover_url": "https://pbs.twimg.com/media/HEaUjMIaUAEj9dw.jpg",
+    "url": "https://x.com/mlinadj/status/2037479220126134436",
+    "author_name": "エム・リナ(M・LINA)",
+    "author_screen_name": "mlinadj",
+    "author_followers": 26701,
+    "likes": 4688,
+    "retweets": 757,
+    "bookmarks": 614,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": false,
+    "original_title": "",
+    "lang": "ja",
+    "tags": [
+      "Claude",
+      "ChatGPT",
+      "Gemini",
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🇯🇵 日本",
+    "category": "AI系"
   },
   {
     "id": "2034627967926825175",
@@ -54,7 +146,10 @@
       "Cursor",
       "生成AI",
       "AI"
-    ]
+    ],
+    "date": "2026-03-19",
+    "region": "🌍 海外",
+    "category": "スキル系"
   },
   {
     "id": "2035255476620075519",
@@ -81,7 +176,10 @@
       "Claude",
       "ChatGPT",
       "AI"
-    ]
+    ],
+    "date": "2026-03-21",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
   },
   {
     "id": "2034880613606727932",
@@ -107,7 +205,10 @@
     "tags": [
       "Claude",
       "AI"
-    ]
+    ],
+    "date": "2026-03-20",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
   },
   {
     "id": "2035657076371075514",
@@ -134,7 +235,10 @@
       "Claude",
       "生成AI",
       "AI"
-    ]
+    ],
+    "date": "2026-03-22",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
   },
   {
     "id": "2034298945242079362",
@@ -161,7 +265,39 @@
       "OpenClaw",
       "Claude",
       "AI"
-    ]
+    ],
+    "date": "2026-03-18",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
+  },
+  {
+    "id": "2037308278045352337",
+    "title": "AIの未来を左右する二大",
+    "body": "which happen first?\n\n A) Max 20x becomes $1000/mo\n B) Anthropic burns through all its customer goodwill",
+    "preview": "which happen first?   A) Max 20x becomes $1000/mo  B) Anthropic burns through all its customer goodwill",
+    "cover_url": "",
+    "url": "https://x.com/elvissun/status/2037308278045352337",
+    "author_name": "Elvis",
+    "author_screen_name": "elvissun",
+    "author_followers": 43603,
+    "likes": 1849,
+    "retweets": 40,
+    "bookmarks": 75,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": true,
+    "original_title": "which happen first?",
+    "lang": "en",
+    "tags": [
+      "Anthropic",
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🌍 海外",
+    "category": "AI系"
   },
   {
     "id": "2035921752203624796",
@@ -187,7 +323,10 @@
     "tags": [
       "ChatGPT",
       "AI"
-    ]
+    ],
+    "date": "2026-03-23",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
   },
   {
     "id": "2034609970084561391",
@@ -213,7 +352,10 @@
     "tags": [
       "OpenClaw",
       "AI"
-    ]
+    ],
+    "date": "2026-03-19",
+    "region": "🌍 海外",
+    "category": "スキル系"
   },
   {
     "id": "2034420249307824569",
@@ -241,7 +383,10 @@
       "Copilot",
       "生成AI",
       "AI"
-    ]
+    ],
+    "date": "2026-03-19",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
   },
   {
     "id": "2035716807257108856",
@@ -267,7 +412,10 @@
     "tags": [
       "Claude",
       "AI"
-    ]
+    ],
+    "date": "2026-03-22",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
   },
   {
     "id": "2034575360621449537",
@@ -296,7 +444,10 @@
       "Gemini",
       "Cursor",
       "AI"
-    ]
+    ],
+    "date": "2026-03-19",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
   },
   {
     "id": "2035576381925621846",
@@ -323,7 +474,39 @@
       "OpenClaw",
       "生成AI",
       "AI"
-    ]
+    ],
+    "date": "2026-03-22",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
+  },
+  {
+    "id": "2037483540275700035",
+    "title": "Google検索のGemini",
+    "body": "google aramalarında gemini’ı kapatabiliyo muyuz im about to lose it. ai cevabı görmek istesem ai’a sorardım.",
+    "preview": "google aramalarında gemini’ı kapatabiliyo muyuz im about to lose it. ai cevabı görmek istesem ai’a sorardım.",
+    "cover_url": "",
+    "url": "https://x.com/marcysuicide/status/2037483540275700035",
+    "author_name": "marcy",
+    "author_screen_name": "marcysuicide",
+    "author_followers": 6481,
+    "likes": 1236,
+    "retweets": 19,
+    "bookmarks": 39,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": true,
+    "original_title": "google aramalarında gemini’ı kapatabiliyo muyuz im about to lose it. ai cevabı görmek istesem ai’...",
+    "lang": "tr",
+    "tags": [
+      "Gemini",
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🌍 海外",
+    "category": "AI系"
   },
   {
     "id": "2034901282750935177",
@@ -349,7 +532,10 @@
     "tags": [
       "Claude",
       "AI"
-    ]
+    ],
+    "date": "2026-03-20",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
   },
   {
     "id": "2035835092921397621",
@@ -378,7 +564,10 @@
       "Gemini",
       "Copilot",
       "AI"
-    ]
+    ],
+    "date": "2026-03-22",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
   },
   {
     "id": "2035843057070096446",
@@ -406,7 +595,39 @@
       "Gemini",
       "生成AI",
       "AI"
-    ]
+    ],
+    "date": "2026-03-22",
+    "region": "🇯🇵 日本",
+    "category": "AI系"
+  },
+  {
+    "id": "2037313908969750831",
+    "title": "プロンプトエンジニアリングは",
+    "body": "プロンプトエンジニアリングは\nもう終わりました。\n\nAnthropicが3月に公式ブログで\n「ハーネス設計」を発表。\n\n同じOpus 4.5でも、ハーネスの有無で\nベンチマーク78% vs 42%。\n\nOpenAIも2月に「Harness Engineering」を公式記事化。\nMartin Fowlerまで解説記事を出しています。\n\nPrompt Engineering（2022）\n→ Context Engineering（2025）\n→ Harness Engineering（2026）\n\nつまり、AIの性能差はもうモデルではなく\n「仕組みの設計力」で決まる時代です。\n\nプロンプトを磨いている間に、\n世界はハーネスを組んでいます。",
+    "preview": "プロンプトエンジニアリングは もう終わりました。  Anthropicが3月に公式ブログで 「ハーネス設計」を発表。  同じOpus 4.5でも、ハーネスの有無で ベンチマーク78% vs 42%。  OpenAIも2月に「Harness Engineering」を公式記事化。 Martin Fowlerまで解説記事を出しています。  Prompt Engineering（2022） → Cont",
+    "cover_url": "https://pbs.twimg.com/media/HEX-CinawAAbe5h.jpg",
+    "url": "https://x.com/kawai_design/status/2037313908969750831",
+    "author_name": "KAWAI",
+    "author_screen_name": "kawai_design",
+    "author_followers": 33961,
+    "likes": 1137,
+    "retweets": 141,
+    "bookmarks": 1248,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": false,
+    "original_title": "",
+    "lang": "ja",
+    "tags": [
+      "Anthropic",
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
   },
   {
     "id": "2036449312939630908",
@@ -432,7 +653,297 @@
     "tags": [
       "Claude",
       "AI"
-    ]
+    ],
+    "date": "2026-03-24",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
+  },
+  {
+    "id": "2037310992284311940",
+    "title": "Codexにプラグイン実装！",
+    "body": "Boom. Plugins! Codex now has access to most things it couldn’t reach before and all super easy behind the same with you use for your ChatGPT account.\n\nI use this for *everything*, from managing my calendar, triaging incoming bugs, keeping up to date with what everyone is doing at the company and so much more",
+    "preview": "Boom. Plugins! Codex now has access to most things it couldn’t reach before and all super easy behind the same with you use for your ChatGPT account.  I use this for *everything*, from managing my cal",
+    "cover_url": "",
+    "url": "https://x.com/thsottiaux/status/2037310992284311940",
+    "author_name": "Tibo",
+    "author_screen_name": "thsottiaux",
+    "author_followers": 48631,
+    "likes": 955,
+    "retweets": 48,
+    "bookmarks": 211,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": true,
+    "original_title": "Boom. Plugins! Codex now has access to most things it couldn’t reach before and all super easy be...",
+    "lang": "en",
+    "tags": [
+      "ChatGPT",
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037311331834146921",
+    "title": "Anthropic、Claude Codeをピーク",
+    "body": "Anthropic just throttled Claude Code during peak hours. here’s what this means. \n\nuse of Claude Code between 5am-11am PT now drains hella faster. weekly limit is the same. we’re not losing anything. they’re just spreading usage.\n\npeak hours cost more and off-peak hours cost less. if you’re running heavy coding sessions, do them outside peak hours and you’ll barely feel a difference.\n\nAnthropic is basically telling us “too many of you are using this at the same time and we need a minute.” \n\nseems like growing pains.",
+    "preview": "Anthropic just throttled Claude Code during peak hours. here’s what this means.   use of Claude Code between 5am-11am PT now drains hella faster. weekly limit is the same. we’re not losing anything. t",
+    "cover_url": "",
+    "url": "https://x.com/birdabo/status/2037311331834146921",
+    "author_name": "sui ☄️",
+    "author_screen_name": "birdabo",
+    "author_followers": 22250,
+    "likes": 885,
+    "retweets": 26,
+    "bookmarks": 190,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": true,
+    "original_title": "Anthropic just throttled Claude Code during peak hours. here’s what this means.",
+    "lang": "en",
+    "tags": [
+      "Claude",
+      "Anthropic",
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037122907000787100",
+    "title": "「コーディングは死んだ",
+    "body": "I am fed up with coding is dead, and programmers are doomed and every company in SF has 100% AI workflow.\n\nguys, Claude Code is great, but it sucks when you actually need to do some useful stuff... \n\nits just a tool",
+    "preview": "I am fed up with coding is dead, and programmers are doomed and every company in SF has 100% AI workflow.  guys, Claude Code is great, but it sucks when you actually need to do some useful stuff...   ",
+    "cover_url": "",
+    "url": "https://x.com/asaio87/status/2037122907000787100",
+    "author_name": "andrei saioc",
+    "author_screen_name": "asaio87",
+    "author_followers": 2700,
+    "likes": 880,
+    "retweets": 40,
+    "bookmarks": 29,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": true,
+    "original_title": "I am fed up with coding is dead, and programmers are doomed and every company in SF has 100% AI w...",
+    "lang": "en",
+    "tags": [
+      "Claude",
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🌍 海外",
+    "category": "スキル系"
+  },
+  {
+    "id": "2037312574459416822",
+    "title": "AI時代でもBlender環境",
+    "body": "and guess what, you still wont know how to create environments in blender https://t.co/hXvwOWeofB",
+    "preview": "and guess what, you still wont know how to create environments in blender https://t.co/hXvwOWeofB",
+    "cover_url": "https://pbs.twimg.com/media/HEX83hcXIAAWhF5.png",
+    "url": "https://x.com/ArtOfPilgrim/status/2037312574459416822",
+    "author_name": "Pilgrim",
+    "author_screen_name": "ArtOfPilgrim",
+    "author_followers": 19819,
+    "likes": 848,
+    "retweets": 40,
+    "bookmarks": 68,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": true,
+    "original_title": "and guess what, you still wont know how to create environments in blender https://t.co/hXvwOWeofB",
+    "lang": "en",
+    "tags": [
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037317696162009299",
+    "title": "AIは思考の代替",
+    "body": "https://t.co/PygMTyRZac",
+    "preview": "https://t.co/PygMTyRZac",
+    "cover_url": "https://pbs.twimg.com/media/HEYBpP3bkAARUjd.jpg",
+    "url": "https://x.com/luke_metro/status/2037317696162009299",
+    "author_name": "Luke Metro",
+    "author_screen_name": "luke_metro",
+    "author_followers": 17055,
+    "likes": 828,
+    "retweets": 36,
+    "bookmarks": 52,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": true,
+    "original_title": "https://t.co/PygMTyRZac",
+    "lang": "zxx",
+    "tags": [
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037304089030066247",
+    "title": "東京大学が公開した「仮説思考の全ノウハウ」が凝縮された資料が有益。",
+    "body": "東京大学が公開した「仮説思考の全ノウハウ」が凝縮された資料が有益。\n\nプロによる「仮説＝意思決定の質」というアプローチから、検証の精度を劇的に上げるテクニック、そして「行動に繋げる」考え方まで、余すことなく徹底公開されている。\n\nこちら👉\nhttps://t.co/kcuFkftCZy https://t.co/TP1QVBFbRw",
+    "preview": "東京大学が公開した「仮説思考の全ノウハウ」が凝縮された資料が有益。  プロによる「仮説＝意思決定の質」というアプローチから、検証の精度を劇的に上げるテクニック、そして「行動に繋げる」考え方まで、余すことなく徹底公開されている。  こちら👉 https://t.co/kcuFkftCZy https://t.co/TP1QVBFbRw",
+    "cover_url": "https://pbs.twimg.com/media/HESvJ9gaoAA5_2s.png",
+    "url": "https://x.com/MacopeninSUTABA/status/2037304089030066247",
+    "author_name": "かずなり | 生成AI活用×大喜利",
+    "author_screen_name": "MacopeninSUTABA",
+    "author_followers": 112857,
+    "likes": 734,
+    "retweets": 77,
+    "bookmarks": 696,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-26",
+    "is_today": false,
+    "is_yesterday": true,
+    "translated": false,
+    "original_title": "",
+    "lang": "ja",
+    "tags": [
+      "AI"
+    ],
+    "date": "2026-03-26",
+    "region": "🇯🇵 日本",
+    "category": "AI系"
+  },
+  {
+    "id": "2037512446785552519",
+    "title": "首相ツイートにChatGPT",
+    "body": "Donc notre premier ministre rédige ses tweets grâce à ChatGPT, et EN PLUS il se fait fact check par la communauté \n\nLe gouvernement de guignols azy https://t.co/8FlZM3uYqM",
+    "preview": "Donc notre premier ministre rédige ses tweets grâce à ChatGPT, et EN PLUS il se fait fact check par la communauté   Le gouvernement de guignols azy https://t.co/8FlZM3uYqM",
+    "cover_url": "https://pbs.twimg.com/media/HEayxTwacAAjV4d.jpg",
+    "url": "https://x.com/Shironeeeki/status/2037512446785552519",
+    "author_name": "S H I R O 🌒",
+    "author_screen_name": "Shironeeeki",
+    "author_followers": 97851,
+    "likes": 724,
+    "retweets": 86,
+    "bookmarks": 20,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": true,
+    "original_title": "Donc notre premier ministre rédige ses tweets grâce à ChatGPT, et EN PLUS il se fait fact check p...",
+    "lang": "fr",
+    "tags": [
+      "ChatGPT",
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037527685270769722",
+    "title": "Gamers can't afford a console, RAM or storage now... it all started with this tweet https://t.co/...",
+    "body": "Gamers can't afford a console, RAM or storage now... it all started with this tweet https://t.co/SQQ6j5pLu2",
+    "preview": "Gamers can't afford a console, RAM or storage now... it all started with this tweet https://t.co/SQQ6j5pLu2",
+    "cover_url": "",
+    "url": "https://x.com/NikTek/status/2037527685270769722",
+    "author_name": "NikTek",
+    "author_screen_name": "NikTek",
+    "author_followers": 63571,
+    "likes": 713,
+    "retweets": 60,
+    "bookmarks": 35,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": false,
+    "original_title": "",
+    "lang": "en",
+    "tags": [
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037469718458835422",
+    "title": "สอนสร้าง \"Gems\" เลขา AI ส่วนตัวใน 4 ขั้นตอน!",
+    "body": "สอนสร้าง \"Gems\" เลขา AI ส่วนตัวใน 4 ขั้นตอน!\n\nไม่ต้องก๊อปวาง Prompt เดิมๆซ้ำๆ คุมโทนงานเป๊ะ ไม่หลุดคาร์แรคเตอร์เดิม\n\nมาฝั่ง gemini กันบ้าง ทำครั้งเดียวใช้ได้ตลอดไป\n\nวิธีสร้าง (ง่ายมาก) ไม่ต้องเขียนcodeก็ทำได้\n\n1. เข้า Gemini → ไปที่ “Gems”\n2. กด “Create Gem”\n3. ใส่คำสั่งให้ครบ RTCF เหมือนเดิม\n4. กด Save แล้วลองใช้เลย\n\nเหมาะกับงานที่ต้องใช้ บริบทเดิม (Context) หรือ มาตรฐานเดิมทุกครั้ง\n\n▶️ เขียนโพสต์ /caption  คุมโทนเดียวกันทุกโพสต์\n▶️ คิดไอเดียคอนเทนต์\n▶️ สรุปข่าว / สรุปบทความยาว ๆ\n▶️ วิเคราะห์ คิด strategy แบบมี framework ที่เราต้องการ\n▶️ งานตรวจสอบ เช่น ให้ช่วยตรวจคำผิด ตรวจจุดผิดในบทความที่เราต้องการให้เช็คทุกครั้ง",
+    "preview": "สอนสร้าง \"Gems\" เลขา AI ส่วนตัวใน 4 ขั้นตอน!  ไม่ต้องก๊อปวาง Prompt เดิมๆซ้ำๆ คุมโทนงานเป๊ะ ไม่หลุดคาร์แรคเตอร์เดิม  มาฝั่ง gemini กันบ้าง ทำครั้งเดียวใช้ได้ตลอดไป  วิธีสร้าง (ง่ายมาก) ไม่ต้องเขียนcod",
+    "cover_url": "https://pbs.twimg.com/media/HEaL6XLakAAjfcv.jpg",
+    "url": "https://x.com/earn_monicha/status/2037469718458835422",
+    "author_name": "Earn Earn😺",
+    "author_screen_name": "earn_monicha",
+    "author_followers": 3020,
+    "likes": 538,
+    "retweets": 347,
+    "bookmarks": 275,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": false,
+    "original_title": "",
+    "lang": "th",
+    "tags": [
+      "Gemini",
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🌍 海外",
+    "category": "スキル系"
+  },
+  {
+    "id": "2037503735455203536",
+    "title": "ياشيخ الله لا يسامح الى عرفك على ChatGPT",
+    "body": "ياشيخ الله لا يسامح الى عرفك على ChatGPT",
+    "preview": "ياشيخ الله لا يسامح الى عرفك على ChatGPT",
+    "cover_url": "",
+    "url": "https://x.com/akaNwxf/status/2037503735455203536",
+    "author_name": "Nwxf",
+    "author_screen_name": "akaNwxf",
+    "author_followers": 3154,
+    "likes": 525,
+    "retweets": 5,
+    "bookmarks": 54,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": false,
+    "original_title": "",
+    "lang": "ar",
+    "tags": [
+      "ChatGPT",
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🌍 海外",
+    "category": "AI系"
   },
   {
     "id": "2034563166689177776",
@@ -460,7 +971,40 @@
       "Claude",
       "Cursor",
       "AI"
-    ]
+    ],
+    "date": "2026-03-19",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
+  },
+  {
+    "id": "2037436535218614298",
+    "title": "如果回顾OpenAI从3.5之后的战略决策：",
+    "body": "如果回顾OpenAI从3.5之后的战略决策：\n\n1. 发布了永远拍你马屁的gpt4o，培养了一大堆npd用户，同期Anthropic在钻研tool call\n\n2. 做了一堆莫名其妙toC产品（Atlas、Sora 2），同期Anthropic在做Coding Agent\n\n3. 研究怎么在ChatGPT里面打广告，同期Anthropic在发展企业用户\n\n……",
+    "preview": "如果回顾OpenAI从3.5之后的战略决策：  1. 发布了永远拍你马屁的gpt4o，培养了一大堆npd用户，同期Anthropic在钻研tool call  2. 做了一堆莫名其妙toC产品（Atlas、Sora 2），同期Anthropic在做Coding Agent  3. 研究怎么在ChatGPT里面打广告，同期Anthropic在发展企业用户  ……",
+    "cover_url": "",
+    "url": "https://x.com/himself65/status/2037436535218614298",
+    "author_name": "面包🍞",
+    "author_screen_name": "himself65",
+    "author_followers": 62490,
+    "likes": 391,
+    "retweets": 15,
+    "bookmarks": 60,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": false,
+    "original_title": "",
+    "lang": "ja",
+    "tags": [
+      "ChatGPT",
+      "Anthropic",
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🇯🇵 日本",
+    "category": "AI系"
   },
   {
     "id": "2034992270576165173",
@@ -489,7 +1033,96 @@
       "ChatGPT",
       "Gemini",
       "AI"
-    ]
+    ],
+    "date": "2026-03-20",
+    "region": "🇯🇵 日本",
+    "category": "AI系"
+  },
+  {
+    "id": "2037495898050318557",
+    "title": "GLM-5.1 by @Zai_org  is one of the best agentic models out there. I've been testing it early and ...",
+    "body": "GLM-5.1 by @Zai_org  is one of the best agentic models out there. I've been testing it early and it is genuienly impressive. Way better at instruction following, long running tasks than previous generation.\n\nfull review here: https://t.co/cV2INbLyyb https://t.co/UJ38qg4nEn",
+    "preview": "GLM-5.1 by @Zai_org  is one of the best agentic models out there. I've been testing it early and it is genuienly impressive. Way better at instruction following, long running tasks than previous gener",
+    "cover_url": "https://pbs.twimg.com/media/HEajmMyaMAA7b6i.jpg",
+    "url": "https://x.com/aicodeking/status/2037495898050318557",
+    "author_name": "AICodeKing",
+    "author_screen_name": "aicodeking",
+    "author_followers": 2756,
+    "likes": 325,
+    "retweets": 20,
+    "bookmarks": 78,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": false,
+    "original_title": "",
+    "lang": "en",
+    "tags": [
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037534620472742075",
+    "title": "@LuisSteeven What I actually want is for people like you, who use ChatGPT to formulate basic repl...",
+    "body": "@LuisSteeven What I actually want is for people like you, who use ChatGPT to formulate basic replies, to be rounded up and deported to Jupiter",
+    "preview": "@LuisSteeven What I actually want is for people like you, who use ChatGPT to formulate basic replies, to be rounded up and deported to Jupiter",
+    "cover_url": "",
+    "url": "https://x.com/MattWalshBlog/status/2037534620472742075",
+    "author_name": "Matt Walsh",
+    "author_screen_name": "MattWalshBlog",
+    "author_followers": 4060601,
+    "likes": 293,
+    "retweets": 6,
+    "bookmarks": 2,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": false,
+    "original_title": "",
+    "lang": "en",
+    "tags": [
+      "ChatGPT",
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🌍 海外",
+    "category": "AI系"
+  },
+  {
+    "id": "2037532973139173756",
+    "title": "Me when Lyla use her Chatgpt line to flirt with Arisa 🤪🫣",
+    "body": "Me when Lyla use her Chatgpt line to flirt with Arisa 🤪🫣\n\nBEFORE IT BREAKS\n#BrokenOfLovePremiere https://t.co/Xith9YHkpK",
+    "preview": "Me when Lyla use her Chatgpt line to flirt with Arisa 🤪🫣  BEFORE IT BREAKS #BrokenOfLovePremiere https://t.co/Xith9YHkpK",
+    "cover_url": "",
+    "url": "https://x.com/msfayemalisorn/status/2037532973139173756",
+    "author_name": "𝗳𝘇𝗵.",
+    "author_screen_name": "msfayemalisorn",
+    "author_followers": 672,
+    "likes": 265,
+    "retweets": 79,
+    "bookmarks": 46,
+    "views": 0,
+    "created_at": "2026-03-27T00:00:00.000000Z",
+    "collected_at": "2026-03-27",
+    "is_today": true,
+    "is_yesterday": false,
+    "translated": false,
+    "original_title": "",
+    "lang": "en",
+    "tags": [
+      "ChatGPT",
+      "AI"
+    ],
+    "date": "2026-03-27",
+    "region": "🌍 海外",
+    "category": "AI系"
   },
   {
     "id": "2035886949618393430",
@@ -515,7 +1148,10 @@
     "tags": [
       "OpenClaw",
       "AI"
-    ]
+    ],
+    "date": "2026-03-23",
+    "region": "🇯🇵 日本",
+    "category": "AI系"
   },
   {
     "id": "2035233835492024809",
@@ -542,7 +1178,10 @@
       "OpenClaw",
       "Claude",
       "AI"
-    ]
+    ],
+    "date": "2026-03-21",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
   },
   {
     "id": "2035925763321635185",
@@ -569,7 +1208,10 @@
       "OpenClaw",
       "生成AI",
       "AI"
-    ]
+    ],
+    "date": "2026-03-23",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
   },
   {
     "id": "2035338145273913668",
@@ -595,7 +1237,10 @@
     "tags": [
       "OpenClaw",
       "AI"
-    ]
+    ],
+    "date": "2026-03-21",
+    "region": "🇯🇵 日本",
+    "category": "GitHub/OSS"
   },
   {
     "id": "2034557201810108678",
@@ -623,7 +1268,10 @@
       "Claude",
       "ChatGPT",
       "AI"
-    ]
+    ],
+    "date": "2026-03-19",
+    "region": "🇯🇵 日本",
+    "category": "スキル系"
   },
   {
     "id": "2035629105874657411",
@@ -650,6 +1298,9 @@
       "OpenClaw",
       "Claude",
       "AI"
-    ]
+    ],
+    "date": "2026-03-22",
+    "region": "🇯🇵 日本",
+    "category": "AI系"
   }
 ]
