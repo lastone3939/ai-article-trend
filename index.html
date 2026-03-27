@@ -632,8 +632,8 @@
 <!-- 日付タブバー -->
 <div id="date-tab-bar">
   <button class="date-tab-btn active" data-date="all">📅 すべて</button>
-  <button class="date-tab-btn" data-date="2026-03-27">🔥 3/27 トレンド</button>
-  <button class="date-tab-btn" data-date="2026-03-26">📰 3/26 トレンド</button>
+  <button class="date-tab-btn" data-date="2026-03-28">🔥 3/28 トレンド</button>
+  <button class="date-tab-btn" data-date="2026-03-27">📰 3/27 トレンド</button>
 </div>
 
 <!-- 検索バー -->
@@ -904,8 +904,15 @@
     const avatarSrc = handle ? `https://unavatar.io/twitter/${handle}` : '';
     const date = fmtDate(a.collected_at || a.created_at);
 
+    // 複数画像を収集（images配列 → cover_url フォールバック）
+    const imgs = (a.images && a.images.length) ? a.images : (a.cover_url ? [a.cover_url] : []);
+    const imgsHTML = imgs.length ? imgs.map((src, i) => `
+      <img class="modal-cover" src="${escapeHtml(src)}" alt="画像${i+1}" loading="lazy"
+           style="${i > 0 ? 'margin-top:4px;' : ''}"
+           onerror="this.style.display='none'">`).join('') : '';
+
     inner.innerHTML = `
-      ${a.cover_url ? `<img class="modal-cover" src="${escapeHtml(a.cover_url)}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
+      ${imgsHTML}
       <div class="modal-content">
         <div class="modal-tags">${renderTagBadges(a.tags)}</div>
         <h2 class="modal-title">${escapeHtml(a.title || '')}</h2>
