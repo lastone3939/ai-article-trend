@@ -845,37 +845,8 @@
       return;
     }
 
-    if (isFiltering) {
-      // フィルター中はセクション分けなし
-      main.innerHTML = buildGridHTML(filteredArticles, 0);
-    } else {
-      // セクション分け表示
-      const todayArticles = filteredArticles.filter(a => isToday(a.collected_at));
-      const yesterdayArticles = filteredArticles.filter(a => isYesterday(a.collected_at));
-      const olderArticles = filteredArticles.filter(a => !isToday(a.collected_at) && !isYesterday(a.collected_at));
-
-      let html = '';
-      let globalIdx = 0;
-
-      if (todayArticles.length) {
-        html += `<div class="section-header">今日の記事 &nbsp; ${todayArticles.length}件</div>`;
-        html += buildGridHTML(todayArticles, globalIdx);
-        globalIdx += todayArticles.length;
-      }
-
-      if (yesterdayArticles.length) {
-        html += `<div class="section-header">昨日のトレンド &nbsp; ${yesterdayArticles.length}件</div>`;
-        html += buildGridHTML(yesterdayArticles, globalIdx);
-        globalIdx += yesterdayArticles.length;
-      }
-
-      if (olderArticles.length) {
-        html += `<div class="section-header">過去の記事 &nbsp; ${olderArticles.length}件</div>`;
-        html += buildGridHTML(olderArticles, globalIdx);
-      }
-
-      main.innerHTML = html;
-    }
+    // 常にいいね順フラット表示
+    main.innerHTML = buildGridHTML(filteredArticles, 0);
 
     attachCardEvents(main);
   }
