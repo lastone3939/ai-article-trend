@@ -904,8 +904,12 @@
         </div>
         <hr class="modal-divider">
         <div class="modal-body">${formatBody(a.body)}</div>
+        ${(a.images && a.images.length > 1) ? `
+        <div class="modal-extra-imgs">
+          ${a.images.slice(1).map(src => `<img src="${escapeHtml(src)}" alt="" loading="lazy" style="width:100%;border-radius:8px;margin-top:8px;" onerror="this.style.display='none'">`).join('')}
+        </div>` : ''}
         <hr class="modal-divider">
-        <a class="modal-open-btn" href="${escapeHtml(a.url || '#')}" target="_blank" rel="noopener">Xで元記事を開く →</a>
+        <a class="modal-open-btn" href="${escapeHtml(a.url || '#')}" target="_blank" rel="noopener">Xで元ポストを確認 →</a>
       </div>
     `;
 
