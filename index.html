@@ -3,289 +3,301 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Buzz Feed | 毎日更新</title>
+<title>AI記事トレンド | 毎日更新</title>
 <style>
-  :root {
-    --bg: #000;
-    --bg2: #0a0a0a;
-    --bg3: #111;
-    --border: #222;
-    --border2: #333;
-    --text: #ededed;
-    --text2: #888;
-    --text3: #555;
-    --accent: #fff;
-    --blue: #0070f3;
-    --blue-dim: rgba(0,112,243,0.1);
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family: -apple-system, 'Geist', 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Hiragino Kaku Gothic Pro', sans-serif; background: #0d0d0d; color: #e8e8e8; min-height: 100vh; }
 
-  /* ナビ */
-  nav { border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); background: rgba(0,0,0,0.8); position: sticky; top:0; z-index:100; }
-  .nav-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; }
-  .nav-logo { display: flex; align-items: center; gap: 10px; }
-  .logo-icon { width: 28px; height: 28px; background: #fff; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
-  .logo-icon svg { width: 16px; height: 16px; }
-  .logo-text { font-size: 15px; font-weight: 600; color: var(--accent); letter-spacing: -0.3px; }
-  .nav-right { display: flex; align-items: center; gap: 12px; }
-  .nav-badge { font-size: 11px; color: var(--text2); background: var(--bg3); border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px; }
-  .nav-btn { font-size: 12px; color: #000; background: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+  /* ヘッダー */
+  .header { background: #111; border-bottom: 1px solid #222; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .logo { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+  .logo span { color: #1d9bf0; }
+  .header-meta { font-size: 12px; color: #666; }
 
-  /* ヒーロー */
-  .hero { max-width: 1200px; margin: 0 auto; padding: 48px 24px 32px; }
-  .hero-eyebrow { font-size: 11px; color: var(--blue); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; font-weight: 500; }
-  .hero-title { font-size: 40px; font-weight: 700; color: var(--accent); letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 8px; }
-  .hero-title span { color: var(--text2); }
-  .hero-sub { font-size: 14px; color: var(--text2); margin-bottom: 28px; }
+  /* 日付タブ */
+  .date-tabs { display: flex; gap: 0; padding: 0 24px; background: #111; border-bottom: 1px solid #222; overflow-x: auto; }
+  .date-tab { padding: 12px 20px; font-size: 13px; cursor: pointer; color: #666; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; }
+  .date-tab:hover { color: #ccc; }
+  .date-tab.active { color: #1d9bf0; border-bottom-color: #1d9bf0; }
+  .date-tab .count { background: #1d9bf0; color: white; font-size: 10px; padding: 1px 5px; border-radius: 8px; margin-left: 4px; }
 
-  /* 日付タブ（Vercel風 segment control） */
-  .tabs-row { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; overflow-x: auto; }
-  .tabs-group { display: flex; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .tab { padding: 7px 16px; font-size: 13px; cursor: pointer; color: var(--text2); transition: all 0.15s; white-space: nowrap; border-right: 1px solid var(--border); }
-  .tab:last-child { border-right: none; }
-  .tab:hover { color: var(--text); background: var(--bg2); }
-  .tab.active { color: var(--accent); background: var(--border); }
-  .tab .cnt { font-size: 10px; color: var(--text3); margin-left: 4px; }
-  .tab.active .cnt { color: var(--text2); }
+  /* フィルターバー */
+  .filter-bar { padding: 12px 24px; display: flex; gap: 8px; overflow-x: auto; background: #0d0d0d; border-bottom: 1px solid #1a1a1a; }
+  .filter-btn { padding: 5px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; border: 1px solid #333; background: transparent; color: #888; transition: all 0.2s; white-space: nowrap; }
+  .filter-btn:hover { border-color: #1d9bf0; color: #1d9bf0; }
+  .filter-btn.active { background: #1d9bf0; border-color: #1d9bf0; color: white; }
 
-  /* フィルター */
-  .filters { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 24px; }
-  .filter { font-size: 12px; padding: 5px 12px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text2); transition: all 0.15s; white-space: nowrap; }
-  .filter:hover { border-color: var(--border2); color: var(--text); }
-  .filter.on { background: var(--accent); border-color: var(--accent); color: #000; }
+  /* メインレイアウト */
+  .main { max-width: 1200px; margin: 0 auto; padding: 20px 24px; }
 
-  /* 統計 */
-  .stats { display: flex; gap: 24px; margin-bottom: 28px; padding: 16px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .stat { }
-  .stat-n { font-size: 20px; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
-  .stat-l { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  /* 統計バナー */
+  .stats-bar { display: flex; gap: 20px; padding: 12px 0 20px; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 700; color: #1d9bf0; }
+  .stat-label { font-size: 11px; color: #555; }
 
-  /* グリッド */
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  /* 記事グリッド */
+  .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
 
-  /* カード */
-  .card { background: var(--bg); padding: 20px; cursor: pointer; transition: background 0.15s; display: flex; flex-direction: column; gap: 12px; }
-  .card:hover { background: var(--bg3); }
-  .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
-  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; }
-  .tag { font-size: 11px; padding: 2px 7px; border-radius: 5px; border: 1px solid; }
-  .t-claude { color: #f97316; border-color: rgba(249,115,22,0.3); background: rgba(249,115,22,0.06); }
-  .t-chatgpt { color: #10b981; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.06); }
-  .t-gemini { color: #4285f4; border-color: rgba(66,133,244,0.3); background: rgba(66,133,244,0.06); }
-  .t-github { color: #a855f7; border-color: rgba(168,85,247,0.3); background: rgba(168,85,247,0.06); }
-  .t-ai { color: #0070f3; border-color: rgba(0,112,243,0.3); background: rgba(0,112,243,0.06); }
-  .t-skill { color: #f59e0b; border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.06); }
-  .t-def { color: var(--text3); border-color: var(--border); background: transparent; }
-  .card-region { font-size: 11px; color: var(--text3); flex-shrink: 0; }
-  .card-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .card-preview { font-size: 12px; color: var(--text3); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border); }
-  .author { display: flex; align-items: center; gap: 6px; min-width: 0; }
-  .avatar { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #000; font-weight: 700; flex-shrink: 0; background: #fff; }
-  .author-name { font-size: 11px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 110px; }
-  .metrics { display: flex; gap: 10px; }
-  .metric { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 3px; }
-  .metric.fire { color: #f97316; }
-  .tr-badge { font-size: 10px; color: var(--blue); border: 1px solid rgba(0,112,243,0.3); padding: 1px 5px; border-radius: 4px; }
+  /* 記事カード */
+  .article-card { background: #111; border: 1px solid #222; border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.2s; }
+  .article-card:hover { border-color: #1d9bf0; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(29,155,240,0.1); }
 
-  /* カテゴリピル */
-  .cat { display: inline-flex; align-items: center; font-size: 10px; gap: 3px; }
-  .cat::before { content:''; width:5px; height:5px; border-radius:50%; flex-shrink:0; }
-  .cat-ai::before { background: var(--blue); }
-  .cat-gh::before { background: #a855f7; }
-  .cat-sk::before { background: #f59e0b; }
+  .card-header { padding: 14px 16px 0; display: flex; justify-content: space-between; align-items: flex-start; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
+  .tag { font-size: 11px; padding: 2px 7px; border-radius: 8px; }
+  .tag-claude { background: rgba(255,140,0,0.15); color: #ff8c00; }
+  .tag-chatgpt { background: rgba(16,163,127,0.15); color: #10a37f; }
+  .tag-gemini { background: rgba(66,133,244,0.15); color: #4285f4; }
+  .tag-github { background: rgba(110,84,148,0.15); color: #9966cc; }
+  .tag-ai { background: rgba(29,155,240,0.15); color: #1d9bf0; }
+  .tag-skill { background: rgba(255,193,7,0.15); color: #ffc107; }
+  .tag-default { background: rgba(255,255,255,0.08); color: #888; }
+  .card-region { font-size: 11px; color: #555; white-space: nowrap; margin-left: 6px; }
 
-  /* 空 */
-  .empty { padding: 60px; text-align: center; color: var(--text3); font-size: 13px; background: var(--bg); }
+  .card-body { padding: 12px 16px; }
+  .card-title { font-size: 14px; font-weight: 700; color: #e8e8e8; line-height: 1.5; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-preview { font-size: 12px; color: #666; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+  .card-footer { padding: 10px 16px 14px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1a1a1a; margin-top: 10px; }
+  .card-author { display: flex; align-items: center; gap: 6px; }
+  .author-avatar { width: 20px; height: 20px; border-radius: 50%; background: #1d9bf0; display: flex; align-items: center; justify-content: center; font-size: 9px; color: white; font-weight: 700; flex-shrink: 0; }
+  .author-name { font-size: 11px; color: #555; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100px; }
+  .card-stats { display: flex; gap: 10px; }
+  .stat-item { font-size: 11px; color: #555; display: flex; align-items: center; gap: 3px; }
+  .stat-item.hot { color: #e94560; }
+
+  /* カテゴリバッジ */
+  .category-badge { font-size: 10px; padding: 2px 7px; border-radius: 4px; margin-bottom: 6px; display: inline-block; }
+  .cat-ai { background: rgba(29,155,240,0.2); color: #1d9bf0; }
+  .cat-github { background: rgba(110,84,148,0.2); color: #9966cc; }
+  .cat-skill { background: rgba(255,193,7,0.2); color: #ffc107; }
+
+  /* 翻訳バッジ */
+  .translated-badge { font-size: 10px; color: #555; margin-left: 4px; }
+
+  /* 空状態 */
+  .empty { text-align: center; padding: 60px 20px; color: #444; }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
 
   /* モーダル */
-  .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); z-index:200; align-items:center; justify-content:center; padding:20px; }
-  .overlay.open { display:flex; }
-  .modal { background: var(--bg3); border: 1px solid var(--border2); border-radius: 12px; max-width: 560px; width: 100%; max-height: 80vh; overflow-y: auto; }
-  .modal-h { padding: 20px 20px 0; display:flex; justify-content:space-between; align-items:flex-start; }
-  .modal-title { font-size: 16px; font-weight: 700; color: var(--accent); line-height: 1.5; flex: 1; padding-right: 12px; }
-  .modal-x { background: none; border: none; color: var(--text3); font-size: 18px; cursor: pointer; padding: 2px; }
-  .modal-b { padding: 16px 20px; font-size: 13px; color: var(--text2); line-height: 1.8; white-space: pre-wrap; word-break: break-word; }
-  .modal-f { padding: 14px 20px; border-top: 1px solid var(--border); }
-  .btn-primary { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
-  .btn-primary:hover { background: #e5e5e5; }
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #111; border: 1px solid #333; border-radius: 16px; max-width: 600px; width: 100%; max-height: 80vh; overflow-y: auto; }
+  .modal-header { padding: 20px 20px 0; display: flex; justify-content: space-between; }
+  .modal-close { background: none; border: none; color: #666; font-size: 20px; cursor: pointer; }
+  .modal-body { padding: 20px; }
+  .modal-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 12px; line-height: 1.5; }
+  .modal-text { font-size: 14px; color: #aaa; line-height: 1.8; white-space: pre-wrap; word-break: break-word; }
+  .modal-footer { padding: 16px 20px; border-top: 1px solid #222; display: flex; gap: 10px; }
+  .btn-x { background: #1d9bf0; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: 600; }
+  .btn-x:hover { background: #1a8cd8; }
 
-  .loading { padding: 60px; text-align: center; color: var(--text3); font-size: 13px; }
-  @media (max-width: 768px) {
-    .hero-title { font-size: 28px; }
-    .grid { grid-template-columns: 1fr; }
-    .stats { gap: 16px; flex-wrap: wrap; }
-  }
+  /* ローディング */
+  .loading { text-align: center; padding: 40px; color: #444; }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-inner">
-    <div class="nav-logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 16 16" fill="none"><path d="M8 1L15 5V11L8 15L1 11V5L8 1Z" stroke="#000" stroke-width="1.5"/></svg>
-      </div>
-      <span class="logo-text">AI Buzz Feed</span>
-    </div>
-    <div class="nav-right">
-      <span class="nav-badge" id="updateBadge">更新中...</span>
-      <button class="nav-btn">Share</button>
-    </div>
-  </div>
-</nav>
+<div class="header">
+  <div class="logo">AI<span>BUZZ</span> 📡</div>
+  <div class="header-meta" id="updateTime">読み込み中...</div>
+</div>
 
-<div class="hero">
-  <div class="hero-eyebrow">Daily Trending</div>
-  <h1 class="hero-title">今日の<span>AI</span>バズ</h1>
-  <p class="hero-sub">X（旧Twitter）からAI・Claude・GitHub関連のバズ投稿を毎日自動収集。海外8：日本2の比率。</p>
+<div class="date-tabs" id="dateTabs"></div>
 
-  <!-- 日付タブ -->
-  <div class="tabs-row">
-    <div class="tabs-group" id="dateTabs"></div>
-  </div>
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">すべて</button>
+  <button class="filter-btn" data-filter="Claude">Claude</button>
+  <button class="filter-btn" data-filter="ChatGPT">ChatGPT</button>
+  <button class="filter-btn" data-filter="Gemini">Gemini</button>
+  <button class="filter-btn" data-filter="GitHub">GitHub/OSS</button>
+  <button class="filter-btn" data-filter="AIエージェント">AIエージェント</button>
+  <button class="filter-btn" data-filter="プロンプト">プロンプト</button>
+  <button class="filter-btn" data-filter="自動化">自動化</button>
+  <button class="filter-btn" data-filter="🌍 海外">🌍 海外</button>
+  <button class="filter-btn" data-filter="🇯🇵 日本">🇯🇵 日本</button>
+</div>
 
-  <!-- フィルター -->
-  <div class="filters" id="filters">
-    <button class="filter on" data-f="all">すべて</button>
-    <button class="filter" data-f="Claude">Claude</button>
-    <button class="filter" data-f="ChatGPT">ChatGPT</button>
-    <button class="filter" data-f="Gemini">Gemini</button>
-    <button class="filter" data-f="GitHub">GitHub/OSS</button>
-    <button class="filter" data-f="AIエージェント">エージェント</button>
-    <button class="filter" data-f="プロンプト">プロンプト</button>
-    <button class="filter" data-f="自動化">自動化</button>
-    <button class="filter" data-f="🌍 海外">🌍 海外</button>
-    <button class="filter" data-f="🇯🇵 日本">🇯🇵 日本</button>
-  </div>
-
-  <!-- 統計 -->
-  <div class="stats" id="stats"></div>
-
-  <!-- グリッド -->
-  <div class="grid" id="grid">
-    <div class="loading">Loading...</div>
+<div class="main">
+  <div class="stats-bar" id="statsBar"></div>
+  <div class="articles-grid" id="articlesGrid">
+    <div class="loading">🔄 記事を読み込んでいます...</div>
   </div>
 </div>
 
 <!-- モーダル -->
-<div class="overlay" id="overlay" onclick="if(event.target===this)close_()">
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal">
-    <div class="modal-h">
-      <div class="modal-title" id="mTitle"></div>
-      <button class="modal-x" onclick="close_()">✕</button>
+    <div class="modal-header">
+      <div></div>
+      <button class="modal-close" onclick="document.getElementById('modalOverlay').classList.remove('open')">✕</button>
     </div>
-    <div class="modal-b" id="mBody"></div>
-    <div class="modal-f">
-      <button class="btn-primary" id="mLink" onclick="window.open(this.dataset.url,'_blank')">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        Xで見る
-      </button>
+    <div class="modal-body">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-text" id="modalText"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-x" id="modalXLink" onclick="window.open(this.dataset.url,'_blank')">Xで見る →</button>
     </div>
   </div>
 </div>
 
 <script>
-let data = [], cur_date = '', cur_filter = 'all';
+let allArticles = [];
+let currentDate = '';
+let currentFilter = 'all';
 
-const tagClass = t => (['Claude','Anthropic'].includes(t)?'t-claude':['ChatGPT','OpenAI','GPT-4'].includes(t)?'t-chatgpt':['Gemini'].includes(t)?'t-gemini':['GitHub','OSS'].includes(t)?'t-github':['AI','LLM','AIエージェント'].includes(t)?'t-ai':['プロンプト','自動化','AIコーディング','スキル'].includes(t)?'t-skill':'t-def');
-const catClass = c => c==='GitHub/OSS'?'cat-gh':c==='スキル系'?'cat-sk':'cat-ai';
-const fmt = n => n>=10000?(n/10000).toFixed(1)+'万':n>=1000?(n/1000).toFixed(1)+'K':String(n||0);
+function getTagClass(tag) {
+  if (['Claude','Anthropic'].includes(tag)) return 'tag-claude';
+  if (['ChatGPT','OpenAI','GPT-4'].includes(tag)) return 'tag-chatgpt';
+  if (['Gemini','Google'].includes(tag)) return 'tag-gemini';
+  if (['GitHub','OSS'].includes(tag)) return 'tag-github';
+  if (['プロンプト','スキル','自動化','AIコーディング'].includes(tag)) return 'tag-skill';
+  if (['AI','LLM','AIエージェント'].includes(tag)) return 'tag-ai';
+  return 'tag-default';
+}
 
-function render() {
-  let items = data.filter(a => a.date === cur_date);
-  if (cur_filter !== 'all') {
-    items = items.filter(a => {
-      if (cur_filter === '🌍 海外') return a.region === '🌍 海外';
-      if (cur_filter === '🇯🇵 日本') return a.region === '🇯🇵 日本';
-      return (a.tags||[]).includes(cur_filter);
-    });
-  }
-  items.sort((a,b) => (b.likes||0)-(a.likes||0));
+function getCategoryClass(cat) {
+  if (cat === 'GitHub/OSS') return 'cat-github';
+  if (cat === 'スキル系') return 'cat-skill';
+  return 'cat-ai';
+}
 
-  // 統計
-  document.getElementById('stats').innerHTML = [
-    [items.length,'記事数'],
-    [items.filter(a=>a.region==='🌍 海外').length,'海外'],
-    [items.filter(a=>a.region==='🇯🇵 日本').length,'日本'],
-    [fmt(Math.max(0,...items.map(a=>a.likes||0))),'最高いいね'],
-  ].map(([n,l])=>`<div class="stat"><div class="stat-n">${n}</div><div class="stat-l">${l}</div></div>`).join('');
+function formatNum(n) {
+  if (!n) return '0';
+  if (n >= 10000) return (n/10000).toFixed(1) + '万';
+  if (n >= 1000) return (n/1000).toFixed(1) + 'K';
+  return n.toString();
+}
 
-  if (!items.length) { document.getElementById('grid').innerHTML='<div class="empty">該当する記事がありません</div>'; return; }
-
-  document.getElementById('grid').innerHTML = items.map(a => {
-    const tags = (a.tags||[]).slice(0,3).map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join('');
-    const tr = a.translated ? '<span class="tr-badge">JP訳</span>' : '';
-    const hot = a.likes >= 500;
-    return `<div class="card" onclick="open_(${JSON.stringify(a.id)})">
-      <div class="card-top">
+function renderCard(a) {
+  const tags = (a.tags || []).slice(0, 3).map(t => 
+    `<span class="tag ${getTagClass(t)}">${t}</span>`
+  ).join('');
+  const translated = a.translated ? '<span class="translated-badge">🌐JP訳</span>' : '';
+  return `
+    <div class="article-card" onclick="openModal(${JSON.stringify(a.id)})">
+      <div class="card-header">
         <div class="card-tags">${tags}</div>
-        <div class="card-region">${a.region||''}</div>
+        <div class="card-region">${a.region || ''}</div>
       </div>
-      <div>
-        <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-          <span class="cat ${catClass(a.category)}">${a.category||'AI系'}</span>${tr}
-        </div>
-        <div class="card-title">${a.title||''}</div>
+      <div class="card-body">
+        <div class="category-badge ${getCategoryClass(a.category)}">${a.category || 'AI系'}</div>${translated}
+        <div class="card-title">${a.title || a.preview || ''}</div>
+        <div class="card-preview">${(a.preview || '').replace(/https?:\/\/\S+/g,'')}</div>
       </div>
-      <div class="card-preview">${(a.preview||'').replace(/https?:\/\/\S+/g,'').trim()}</div>
       <div class="card-footer">
-        <div class="author">
-          <div class="avatar">${(a.author_name||'?')[0].toUpperCase()}</div>
+        <div class="card-author">
+          <div class="author-avatar">${(a.author_name||'?')[0]}</div>
           <div class="author-name">@${a.author_screen_name||''}</div>
         </div>
-        <div class="metrics">
-          <div class="metric${hot?' fire':''}">♥ ${fmt(a.likes)}</div>
-          <div class="metric">🔁 ${fmt(a.retweets)}</div>
+        <div class="card-stats">
+          ${a.likes > 1000 ? `<div class="stat-item hot">❤️ ${formatNum(a.likes)}</div>` : `<div class="stat-item">♥ ${formatNum(a.likes)}</div>`}
+          <div class="stat-item">🔁 ${formatNum(a.retweets)}</div>
+          ${a.views ? `<div class="stat-item">👁 ${formatNum(a.views)}</div>` : ''}
         </div>
       </div>
     </div>`;
-  }).join('');
 }
 
-function open_(id) {
-  const a = data.find(x => x.id === id); if (!a) return;
-  document.getElementById('mTitle').textContent = a.title||'';
-  document.getElementById('mBody').textContent = a.body||a.preview||'';
-  document.getElementById('mLink').dataset.url = a.url||'#';
-  document.getElementById('overlay').classList.add('open');
+function renderGrid() {
+  let filtered = allArticles.filter(a => a.date === currentDate);
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(a => {
+      if (currentFilter === '🌍 海外') return a.region === '🌍 海外';
+      if (currentFilter === '🇯🇵 日本') return a.region === '🇯🇵 日本';
+      return (a.tags || []).includes(currentFilter);
+    });
+  }
+  filtered.sort((a,b) => (b.likes||0) - (a.likes||0));
+  
+  const grid = document.getElementById('articlesGrid');
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>該当する記事がありません</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(renderCard).join('');
+  
+  // 統計更新
+  const stats = document.getElementById('statsBar');
+  const total = filtered.length;
+  const overseas = filtered.filter(a => a.region === '🌍 海外').length;
+  const jp = filtered.filter(a => a.region === '🇯🇵 日本').length;
+  const maxLikes = Math.max(...filtered.map(a => a.likes||0));
+  stats.innerHTML = `
+    <div class="stat"><div class="stat-num">${total}</div><div class="stat-label">記事数</div></div>
+    <div class="stat"><div class="stat-num">${overseas}</div><div class="stat-label">海外</div></div>
+    <div class="stat"><div class="stat-num">${jp}</div><div class="stat-label">日本</div></div>
+    <div class="stat"><div class="stat-num">${formatNum(maxLikes)}</div><div class="stat-label">最高いいね</div></div>
+  `;
 }
-function close_() { document.getElementById('overlay').classList.remove('open'); }
 
-document.getElementById('filters').addEventListener('click', e => {
-  const btn = e.target.closest('.filter'); if (!btn) return;
-  document.querySelectorAll('.filter').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  cur_filter = btn.dataset.f;
-  render();
+function openModal(id) {
+  const a = allArticles.find(x => x.id === id);
+  if (!a) return;
+  document.getElementById('modalTitle').textContent = a.title || '';
+  document.getElementById('modalText').textContent = a.body || a.preview || '';
+  document.getElementById('modalXLink').dataset.url = a.url || '#';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('open');
+  }
+}
+
+// フィルターボタン
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderGrid();
+  });
 });
 
-fetch('./site_data.json').then(r=>r.json()).then(d => {
-  data = d;
-  const dates = [...new Set(d.map(a=>a.date).filter(Boolean))].sort().reverse();
-  cur_date = dates[0]||'';
-
-  const today = new Date().toISOString().slice(0,10);
-  const yest = new Date(Date.now()-864e5).toISOString().slice(0,10);
-  const tabs = document.getElementById('dateTabs');
-  tabs.innerHTML = dates.slice(0,7).map(dt => {
-    const cnt = d.filter(a=>a.date===dt).length;
-    const label = dt===today?`今日 ${dt}`:dt===yest?`昨日 ${dt}`:dt;
-    return `<div class="tab${dt===cur_date?' active':''}" data-d="${dt}">${label}<span class="cnt">${cnt}</span></div>`;
-  }).join('');
-
-  tabs.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-    tabs.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    t.classList.add('active');
-    cur_date = t.dataset.d;
-    render();
-  }));
-
-  const n = new Date();
-  document.getElementById('updateBadge').textContent = `${n.getMonth()+1}/${n.getDate()} ${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')} 更新`;
-  render();
-}).catch(() => { document.getElementById('grid').innerHTML='<div class="empty">データ読み込みエラー</div>'; });
+// データ読み込み
+fetch('./site_data.json')
+  .then(r => r.json())
+  .then(data => {
+    allArticles = data;
+    
+    // 日付リスト
+    const dates = [...new Set(data.map(a => a.date).filter(Boolean))].sort().reverse();
+    if (dates.length > 0) currentDate = dates[0];
+    
+    // 日付タブ描画
+    const tabsEl = document.getElementById('dateTabs');
+    tabsEl.innerHTML = dates.map(d => {
+      const count = data.filter(a => a.date === d).length;
+      const label = d === new Date().toISOString().slice(0,10) ? `今日 ${d}` :
+                    d === new Date(Date.now()-86400000).toISOString().slice(0,10) ? `昨日 ${d}` : d;
+      return `<div class="date-tab ${d === currentDate ? 'active' : ''}" data-date="${d}">
+        ${label}<span class="count">${count}</span>
+      </div>`;
+    }).join('');
+    
+    document.querySelectorAll('.date-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentDate = tab.dataset.date;
+        renderGrid();
+      });
+    });
+    
+    // 更新時刻
+    const now = new Date();
+    document.getElementById('updateTime').textContent = 
+      `最終更新: ${now.getMonth()+1}/${now.getDate()} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')} JST`;
+    
+    renderGrid();
+  })
+  .catch(e => {
+    document.getElementById('articlesGrid').innerHTML = '<div class="empty"><div class="empty-icon">⚠️</div>データの読み込みに失敗しました</div>';
+  });
 </script>
 </body>
 </html>
