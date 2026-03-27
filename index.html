@@ -60,49 +60,10 @@
       color: #37352f;
     }
 
-    /* ── 日付タブバー ── */
-    #date-tab-bar {
-      position: sticky;
-      top: 49px;
-      z-index: 100;
-      background: #fff;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 8px 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      width: 100%;
-      max-width: 100vw;
-    }
-    #date-tab-bar::-webkit-scrollbar { display: none; }
-    .date-tab-btn {
-      flex-shrink: 0;
-      padding: 6px 16px;
-      border-radius: 20px;
-      border: 1px solid #e5e7eb;
-      background: #fff;
-      color: #6b7280;
-      font-size: 13px;
-      font-family: 'Noto Sans JP', sans-serif;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.12s;
-      white-space: nowrap;
-    }
-    .date-tab-btn:hover { border-color: #9ca3af; color: #37352f; }
-    .date-tab-btn.active {
-      background: #37352f;
-      color: #fff;
-      border-color: #37352f;
-    }
-
     /* ── 検索バー ── */
     #search-bar {
       position: sticky;
-      top: 93px;
+      top: 49px;
       z-index: 99;
       background: #fff;
       border-bottom: 1px solid #e5e7eb;
@@ -153,73 +114,10 @@
       flex-shrink: 0;
     }
 
-    /* ── 昨日のトレンドTOP5 ── */
-    #yesterday-top {
-      padding: 16px 20px 0;
-    }
-    #yesterday-top .yt-heading {
-      font-size: 14px;
-      font-weight: 700;
-      color: #37352f;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    #yesterday-top .yt-cards {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      padding-bottom: 4px;
-    }
-    #yesterday-top .yt-cards::-webkit-scrollbar { display: none; }
-    .yt-card {
-      flex-shrink: 0;
-      width: 180px;
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 10px 12px;
-      cursor: pointer;
-      transition: all 0.12s;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .yt-card:hover { border-color: #9ca3af; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
-    .yt-card .yt-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: #37352f;
-      line-height: 1.4;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .yt-card .yt-meta {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      color: #6b7280;
-    }
-    .yt-card .yt-region {
-      font-size: 11px;
-      padding: 1px 6px;
-      border-radius: 10px;
-      background: #f3f4f6;
-      color: #374151;
-      border: 1px solid #e5e7eb;
-      flex-shrink: 0;
-    }
-
     /* ── タグバー ── */
     #tag-bar {
       position: sticky;
-      top: 145px;
+      top: 101px;
       z-index: 98;
       background: #fff;
       border-bottom: 1px solid #e5e7eb;
@@ -629,13 +527,6 @@
   </div>
 </header>
 
-<!-- 日付タブバー -->
-<div id="date-tab-bar">
-  <button class="date-tab-btn active" data-date="all">📅 すべて</button>
-  <button class="date-tab-btn" data-date="2026-03-28">🔥 3/28 トレンド</button>
-  <button class="date-tab-btn" data-date="2026-03-27">📰 3/27 トレンド</button>
-</div>
-
 <!-- 検索バー -->
 <div id="search-bar">
   <div class="search-wrap">
@@ -657,8 +548,6 @@
   <button class="tag-btn" data-tag="Cursor">Cursor</button>
   <button class="tag-btn" data-tag="生成AI">生成AI</button>
   <button class="tag-btn" data-tag="AI">AI</button>
-  <button class="tag-btn" data-tag="🌍 海外">🌍 海外</button>
-  <button class="tag-btn" data-tag="🇯🇵 日本">🇯🇵 日本</button>
   <div class="tag-bar-spacer"></div>
   <select id="sort-select">
     <option value="likes">いいね順</option>
@@ -666,12 +555,6 @@
     <option value="retweets">RT順</option>
     <option value="newest">新着順</option>
   </select>
-</div>
-
-<!-- 昨日のトレンドTOP5（動的に挿入） -->
-<div id="yesterday-top" style="display:none">
-  <div class="yt-heading">📰 昨日のトレンド TOP5</div>
-  <div class="yt-cards" id="yt-cards-inner"></div>
 </div>
 
 <!-- メインコンテンツ -->
@@ -743,7 +626,6 @@
   let allArticles = [];
   let filteredArticles = [];
   let activeTag = '全て';
-  let activeDateTab = 'all';   // 'all' | '2026-03-27' | '2026-03-26'
   let searchQuery = '';
   let sortMode = 'likes';
 
@@ -751,14 +633,6 @@
   function applyFilters() {
     const q = searchQuery.toLowerCase();
     filteredArticles = allArticles.filter(a => {
-      // 日付タブフィルター
-      if (activeDateTab !== 'all') {
-        const aDate = a.date || a.collected_at || '';
-        if (!aDate.startsWith(activeDateTab)) return false;
-      }
-      // 地域タグフィルター
-      if (activeTag === '🌍 海外') return a.region === '🌍 海外' || a.lang !== 'ja';
-      if (activeTag === '🇯🇵 日本') return a.region === '🇯🇵 日本' || a.lang === 'ja';
       const tagMatch = activeTag === '全て' || (a.tags && a.tags.includes(activeTag));
       if (!tagMatch) return false;
       if (!q) return true;
@@ -845,8 +719,37 @@
       return;
     }
 
-    // 常にいいね順フラット表示
-    main.innerHTML = buildGridHTML(filteredArticles, 0);
+    if (isFiltering) {
+      // フィルター中はセクション分けなし
+      main.innerHTML = buildGridHTML(filteredArticles, 0);
+    } else {
+      // セクション分け表示
+      const todayArticles = filteredArticles.filter(a => isToday(a.collected_at));
+      const yesterdayArticles = filteredArticles.filter(a => isYesterday(a.collected_at));
+      const olderArticles = filteredArticles.filter(a => !isToday(a.collected_at) && !isYesterday(a.collected_at));
+
+      let html = '';
+      let globalIdx = 0;
+
+      if (todayArticles.length) {
+        html += `<div class="section-header">今日の記事 &nbsp; ${todayArticles.length}件</div>`;
+        html += buildGridHTML(todayArticles, globalIdx);
+        globalIdx += todayArticles.length;
+      }
+
+      if (yesterdayArticles.length) {
+        html += `<div class="section-header">昨日のトレンド &nbsp; ${yesterdayArticles.length}件</div>`;
+        html += buildGridHTML(yesterdayArticles, globalIdx);
+        globalIdx += yesterdayArticles.length;
+      }
+
+      if (olderArticles.length) {
+        html += `<div class="section-header">過去の記事 &nbsp; ${olderArticles.length}件</div>`;
+        html += buildGridHTML(olderArticles, globalIdx);
+      }
+
+      main.innerHTML = html;
+    }
 
     attachCardEvents(main);
   }
@@ -875,15 +778,8 @@
     const avatarSrc = handle ? `https://unavatar.io/twitter/${handle}` : '';
     const date = fmtDate(a.collected_at || a.created_at);
 
-    // 複数画像を収集（images配列 → cover_url フォールバック）
-    const imgs = (a.images && a.images.length) ? a.images : (a.cover_url ? [a.cover_url] : []);
-    const imgsHTML = imgs.length ? imgs.map((src, i) => `
-      <img class="modal-cover" src="${escapeHtml(src)}" alt="画像${i+1}" loading="lazy"
-           style="${i > 0 ? 'margin-top:4px;' : ''}"
-           onerror="this.style.display='none'">`).join('') : '';
-
     inner.innerHTML = `
-      ${imgsHTML}
+      ${a.cover_url ? `<img class="modal-cover" src="${escapeHtml(a.cover_url)}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
       <div class="modal-content">
         <div class="modal-tags">${renderTagBadges(a.tags)}</div>
         <h2 class="modal-title">${escapeHtml(a.title || '')}</h2>
@@ -904,12 +800,8 @@
         </div>
         <hr class="modal-divider">
         <div class="modal-body">${formatBody(a.body)}</div>
-        ${(a.images && a.images.length > 1) ? `
-        <div class="modal-extra-imgs">
-          ${a.images.slice(1).map(src => `<img src="${escapeHtml(src)}" alt="" loading="lazy" style="width:100%;border-radius:8px;margin-top:8px;" onerror="this.style.display='none'">`).join('')}
-        </div>` : ''}
         <hr class="modal-divider">
-        <a class="modal-open-btn" href="${escapeHtml(a.url || '#')}" target="_blank" rel="noopener">Xで元ポストを確認 →</a>
+        <a class="modal-open-btn" href="${escapeHtml(a.url || '#')}" target="_blank" rel="noopener">Xで元記事を開く →</a>
       </div>
     `;
 
@@ -931,61 +823,10 @@
     if (e.key === 'Escape') closeModal();
   });
 
-  // ── 昨日TOP5レンダリング ──
-  function renderYesterdayTop5(articles) {
-    const YESTERDAY = '2026-03-26';
-    const top5 = articles
-      .filter(a => (a.date || a.collected_at || '').startsWith(YESTERDAY))
-      .sort((a, b) => (b.likes || 0) - (a.likes || 0))
-      .slice(0, 5);
-
-    const container = document.getElementById('yesterday-top');
-    const inner = document.getElementById('yt-cards-inner');
-
-    if (!top5.length) { container.style.display = 'none'; return; }
-
-    inner.innerHTML = top5.map((a, idx) => {
-      // store full article index in allArticles
-      const fullIdx = articles.findIndex(x => x.id === a.id);
-      return `
-        <div class="yt-card" data-ytidx="${fullIdx}" tabindex="0">
-          <div class="yt-title">${escapeHtml(a.title || '')}</div>
-          <div class="yt-meta">
-            <span class="yt-region">${escapeHtml(a.region || (a.lang === 'ja' ? '🇯🇵 日本' : '🌍 海外'))}</span>
-            <span>♡ ${fmt(a.likes)}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    container.style.display = 'block';
-
-    inner.querySelectorAll('.yt-card').forEach(card => {
-      const handler = () => {
-        const idx = parseInt(card.dataset.ytidx, 10);
-        if (!isNaN(idx) && articles[idx]) openModal(articles[idx]);
-      };
-      card.addEventListener('click', handler);
-      card.addEventListener('keydown', e => { if (e.key === 'Enter') handler(); });
-    });
-  }
-
   // ── イベントリスナー ──
   document.getElementById('search-input').addEventListener('input', e => {
     searchQuery = e.target.value.trim();
     applyFilters();
-  });
-
-  document.querySelectorAll('.date-tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.date-tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeDateTab = btn.dataset.date;
-      // 「すべて」以外ではYesterday TOP5を非表示
-      const ytSection = document.getElementById('yesterday-top');
-      if (ytSection) ytSection.style.display = activeDateTab === 'all' ? 'block' : 'none';
-      applyFilters();
-    });
   });
 
   document.querySelectorAll('.tag-btn').forEach(btn => {
@@ -1016,7 +857,6 @@
       }
       document.getElementById('header-count').textContent = `${data.length}件`;
 
-      renderYesterdayTop5(allArticles);
       applyFilters();
     })
     .catch(err => {
