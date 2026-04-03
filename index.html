@@ -259,7 +259,7 @@ a:hover{text-decoration:underline}
     if(e.key==='Escape') closeModal();
   });
 
-  fetch('../site_data.json')
+  fetch('site_data.json')
     .then(function(r){ return r.json(); })
     .then(function(data){
       articles = data;
