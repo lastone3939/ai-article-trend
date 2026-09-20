@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PageIntro } from "@/components/layout/Chrome";
+import { PageHead } from "@/components/layout/Chrome";
 import { DEMO_SURVEY } from "@/lib/survey/demo";
 import { saveRun, useDraftSurvey } from "@/lib/store";
 import type { RunResult } from "@/lib/survey/types";
@@ -22,12 +22,11 @@ function RunInner() {
   const [ticker, setTicker] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const resultRef = useRef<RunResult | null>(null);
-
-  const preview = useMemo(() => survey.questions.slice(0, 4), [survey]);
+  const preview = useMemo(() => survey.questions.slice(0, 6), [survey]);
 
   useEffect(() => {
     if (demo && !running && !resultRef.current) {
-      const t = setTimeout(() => void start(), 400);
+      const t = setTimeout(() => void start(), 300);
       return () => clearTimeout(t);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,7 +39,6 @@ function RunInner() {
     setProgress(4);
     setTicker([]);
     const started = Date.now();
-
     const anim = window.setInterval(() => {
       setProgress((p) => {
         const next = Math.min(92, p + Math.random() * 7 + 2);
@@ -51,7 +49,6 @@ function RunInner() {
         return next;
       });
     }, 90);
-
     try {
       const res = await fetch("/api/run", {
         method: "POST",
@@ -62,7 +59,6 @@ function RunInner() {
       const data = (await res.json()) as RunResult;
       resultRef.current = data;
       saveRun(data);
-
       const lines = data.answers
         .filter((_, i) => i % Math.ceil(data.answers.length / 8) === 0)
         .slice(0, 8)
@@ -71,11 +67,10 @@ function RunInner() {
           return `${p?.displayName ?? a.personaId}（${p?.age}・${p?.prefecture}）— ${a.selectedLabel}`;
         });
       setTicker(lines);
-      const remain = Math.max(0, 1600 - (Date.now() - started));
-      await new Promise((r) => setTimeout(r, remain));
+      await new Promise((r) => setTimeout(r, Math.max(0, 1400 - (Date.now() - started))));
       setProgress(100);
       setPhase("集計");
-      await new Promise((r) => setTimeout(r, 350));
+      await new Promise((r) => setTimeout(r, 280));
       router.push("/results");
     } catch (e) {
       setError(e instanceof Error ? e.message : "エラー");
@@ -86,108 +81,94 @@ function RunInner() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <PageIntro
-        kicker="Run panel"
-        title={running ? "パネルが、答えている。" : "いま、聞く。"}
-        lede={survey.description}
+    <div className="p-4 sm:p-5">
+      <PageHead
+        crumbs={["配信管理", "配信スケジュール"]}
+        title="調査の実行"
+        actions={<span className="badge-synth">仮想パネル／合成回答</span>}
       />
-
-      <div className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="paper-card p-6 sm:p-8">
-          <div className="flex items-start justify-between gap-4">
+      <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+        <section className="card p-5">
+          <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="font-mono text-[11px] text-muted">{survey.id}</p>
-              <h2 className="mt-1 font-serif text-2xl">{survey.title}</h2>
+              <p className="text-[11px] text-muted">{survey.id}</p>
+              <h2 className="mt-1 text-[16px] font-semibold">{survey.title}</h2>
             </div>
-            <span className="bg-vermillion px-2 py-1 text-[10px] tracking-wider text-surface">
-              SYNTHETIC
-            </span>
           </div>
-          <dl className="mt-6 grid grid-cols-3 gap-3 text-sm">
+          <dl className="mt-4 grid grid-cols-3 gap-3 text-[13px]">
             <div>
-              <dt className="text-xs text-muted">N</dt>
-              <dd className="font-serif text-2xl">{fmtN(survey.sampleSize)}</dd>
+              <dt className="text-[11px] text-muted">N</dt>
+              <dd className="text-xl font-semibold">{fmtN(survey.sampleSize)}</dd>
             </div>
             <div>
-              <dt className="text-xs text-muted">設問</dt>
-              <dd className="font-serif text-2xl">{survey.questions.length}</dd>
+              <dt className="text-[11px] text-muted">設問</dt>
+              <dd className="text-xl font-semibold">{survey.questions.length}</dd>
             </div>
             <div>
-              <dt className="text-xs text-muted">カテゴリ</dt>
-              <dd className="mt-1 text-sm">{survey.category}</dd>
+              <dt className="text-[11px] text-muted">カテゴリ</dt>
+              <dd className="pt-1">{survey.category}</dd>
             </div>
           </dl>
-          <ol className="mt-6 space-y-3">
+          <ol className="mt-4 space-y-2 text-[13px] text-ink-soft">
             {preview.map((q, i) => (
-              <li key={q.id} className="flex gap-3 text-sm leading-6 text-ink-soft">
-                <span className="font-mono text-[11px] text-vermillion">Q{i + 1}</span>
-                <span>{q.text}</span>
+              <li key={q.id}>
+                <span className="mr-2 text-muted">Q{i + 1}</span>
+                {q.text}
               </li>
             ))}
-            {survey.questions.length > preview.length && (
-              <li className="text-xs text-muted">ほか {survey.questions.length - preview.length} 問</li>
-            )}
           </ol>
           {!running && (
-            <button
-              type="button"
-              onClick={() => void start()}
-              className="mt-8 bg-vermillion px-6 py-3 text-sm text-surface hover:bg-vermillion-deep"
-            >
-              {fmtN(survey.sampleSize)} 人に聞く
+            <button type="button" className="btn btn-primary mt-6" onClick={() => void start()}>
+              {fmtN(survey.sampleSize)}人の仮想パネルに聞く
             </button>
           )}
-          {error && <p className="mt-4 text-sm text-vermillion">{error}</p>}
-        </div>
-
-        <div className="paper-card flex flex-col p-6 sm:p-8">
-          <div className="flex items-center justify-between">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-              Live
-            </p>
-            <p className="text-xs text-muted">{phase}</p>
+          {error && <p className="mt-3 text-[13px] text-red-600">{error}</p>}
+        </section>
+        <section className="card p-5">
+          <div className="flex items-center justify-between text-[12px] text-muted">
+            <span>配信状況</span>
+            <span>{phase}</span>
           </div>
-          <div className="relative mx-auto mt-8 grid h-40 w-40 place-items-center">
-            <svg viewBox="0 0 100 100" className="-rotate-90 h-40 w-40">
-              <circle cx="50" cy="50" r="42" fill="none" stroke="#E8E0D0" strokeWidth="6" />
+          <div className="relative mx-auto mt-6 grid h-36 w-36 place-items-center">
+            <svg viewBox="0 0 100 100" className="h-36 w-36 -rotate-90">
+              <circle cx="50" cy="50" r="42" fill="none" stroke="#E2E8F0" strokeWidth="6" />
               <circle
                 cx="50"
                 cy="50"
                 r="42"
                 fill="none"
-                stroke="#C43C24"
+                stroke="#2B6CB0"
                 strokeWidth="6"
                 strokeLinecap="round"
                 strokeDasharray={`${(progress / 100) * 2 * Math.PI * 42} ${2 * Math.PI * 42}`}
               />
             </svg>
             <div className="absolute text-center">
-              <p className="font-serif text-3xl">{Math.round(progress)}</p>
-              <p className="font-mono text-[10px] text-muted">PERCENT</p>
+              <p className="text-2xl font-semibold">{Math.round(progress)}</p>
+              <p className="text-[10px] text-muted">%</p>
             </div>
           </div>
-          <div className="mt-6 flex gap-1">
+          <div className="mt-4 flex gap-1">
             {PHASES.map((p) => (
               <div
                 key={p}
-                className={`h-1 flex-1 ${phase === p || progress === 100 ? "bg-vermillion" : "bg-chip"}`}
+                className={`h-1.5 flex-1 ${phase === p || progress === 100 ? "bg-brand" : "bg-slate-200"}`}
               />
             ))}
           </div>
-          <div className="ticker mt-6 min-h-[9rem] space-y-2 overflow-hidden text-xs leading-6 text-ink-soft">
+          <div className="mt-4 min-h-[8rem] space-y-2 text-[12px] leading-6 text-ink-soft">
             {ticker.length === 0 && (
               <p className="text-muted">
-                {running ? "仮想回答が流れ始めます。" : "実行すると、回答の抜粋がここに並びます。"}
+                {running ? "合成回答が流れます。" : "実行すると回答の抜粋が並びます。"}
               </p>
             )}
             {ticker.map((line) => (
-              <p key={line} className="rise border-b border-line/70 pb-2">
+              <p key={line} className="border-b border-line pb-2">
                 {line}
               </p>
             ))}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
@@ -195,7 +176,7 @@ function RunInner() {
 
 export default function RunPage() {
   return (
-    <Suspense fallback={<div className="px-6 py-16 text-sm text-muted">読み込み中…</div>}>
+    <Suspense fallback={<div className="p-6 text-sm text-muted">読み込み中…</div>}>
       <RunInner />
     </Suspense>
   );

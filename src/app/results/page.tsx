@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { PageIntro } from "@/components/layout/Chrome";
+import { PageHead } from "@/components/layout/Chrome";
 import {
   aggregateQuestion,
   crosstab,
@@ -27,7 +27,6 @@ export default function ResultsPage() {
   const result = useLastRun();
   const [dim, setDim] = useState<"ageBand" | "gender" | "region">("ageBand");
   const [qIndex, setQIndex] = useState(0);
-
   const aggs = useMemo(
     () => (result ? result.survey.questions.map((q) => aggregateQuestion(result, q)) : []),
     [result],
@@ -45,17 +44,14 @@ export default function ResultsPage() {
 
   if (!result) {
     return (
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-        <PageIntro kicker="Results" title="まだ、結果がない。" />
-        <div className="paper-card mt-10 max-w-xl p-8">
-          <p className="font-serif text-xl">空の机。</p>
-          <p className="mt-3 text-sm leading-7 text-ink-soft">
-            合成パネルに一度聞いてください。デモなら、コンビニ弁当の意向がすぐに並びます。
+      <div className="p-4 sm:p-5">
+        <PageHead crumbs={["集計・分析", "リアルタイム集計"]} title="集計結果" />
+        <div className="card max-w-xl p-6">
+          <p className="text-[15px] font-semibold">まだ結果がありません</p>
+          <p className="mt-2 text-[13px] leading-6 text-ink-soft">
+            デモ調査を実行すると、仮想パネルの合成回答がここに並びます。
           </p>
-          <Link
-            href="/run?demo=1"
-            className="mt-6 inline-block bg-vermillion px-5 py-2.5 text-sm text-surface"
-          >
+          <Link href="/run?demo=1" className="btn btn-primary mt-4">
             デモを実行
           </Link>
         </div>
@@ -64,29 +60,25 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <PageIntro
-        kicker="Results dashboard"
+    <div className="p-4 sm:p-5">
+      <PageHead
+        crumbs={["集計・分析", "リアルタイム集計"]}
         title={result.survey.title}
-        lede={`${fmtN(result.sampleSize)} 人の仮想回答。所要 ${result.elapsedMs}ms。実在の声ではありません。`}
-        action={
-          <div className="flex flex-wrap gap-2">
+        actions={
+          <>
+            <span className="badge-synth">仮想パネル／合成回答 · N={fmtN(result.sampleSize)}</span>
             <button
               type="button"
-              className="border border-line bg-surface px-3 py-2 text-xs"
+              className="btn btn-ghost"
               onClick={() =>
-                downloadText(
-                  `${result.survey.id}.csv`,
-                  toCsv(result),
-                  "text/csv;charset=utf-8",
-                )
+                downloadText(`${result.survey.id}.csv`, toCsv(result), "text/csv;charset=utf-8")
               }
             >
               CSV
             </button>
             <button
               type="button"
-              className="border border-line bg-surface px-3 py-2 text-xs"
+              className="btn btn-ghost"
               onClick={() =>
                 downloadText(
                   `${result.survey.id}.json`,
@@ -97,15 +89,19 @@ export default function ResultsPage() {
             >
               JSON
             </button>
-            <Link href="/run" className="bg-ink px-3 py-2 text-xs text-paper">
+            <Link href="/run" className="btn btn-primary">
               再実行
             </Link>
-          </div>
+          </>
         }
       />
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi label="N（合成）" value={fmtN(stats?.n ?? 0)} note="加重パネルからの抽出" />
+      <p className="mb-3 text-[12px] text-muted">
+        {fmtN(result.sampleSize)} 人の合成回答 · {result.elapsedMs}ms · 実在の声ではありません
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Kpi label="N（合成）" value={fmtN(stats?.n ?? 0)} note="仮想パネルからの抽出" />
         <Kpi
           label="意向平均 498円"
           value={stats?.mean498 != null ? stats.mean498.toFixed(2) : "—"}
@@ -119,52 +115,46 @@ export default function ResultsPage() {
         <Kpi
           label="平均確信度"
           value={stats ? pct(stats.avgConfidence * 100, 0) : "—"}
-          note="TypeSafe Score"
+          note="Choice / Score"
         />
       </div>
 
-      <div className="mt-10 space-y-4">
+      <div className="mt-4 space-y-3">
         {aggs.map((agg) => (
-          <article key={agg.question.id} className="paper-card p-5 sm:p-6">
-            <div className="flex flex-wrap items-start justify-between gap-3">
+          <article key={agg.question.id} className="card p-4">
+            <div className="flex flex-wrap items-start justify-between gap-2">
               <div className="max-w-2xl">
-                <p className="font-mono text-[11px] text-vermillion">{agg.question.id}</p>
-                <h3 className="mt-1 font-serif text-xl leading-snug">{agg.question.text}</h3>
+                <p className="text-[11px] text-muted">{agg.question.id}</p>
+                <h3 className="mt-1 text-[14px] font-semibold leading-snug">{agg.question.text}</h3>
               </div>
               {agg.mean != null && (
-                <p className="text-sm text-muted">
-                  平均 <span className="font-serif text-lg text-ink">{agg.mean.toFixed(2)}</span>
-                  {agg.topBox != null && (
-                    <span className="ml-3">Top2 {pct(agg.topBox)}</span>
-                  )}
+                <p className="text-[12px] text-muted">
+                  平均 <span className="text-[16px] font-semibold text-ink">{agg.mean.toFixed(2)}</span>
+                  {agg.topBox != null && <span className="ml-3">Top2 {pct(agg.topBox)}</span>}
                 </p>
               )}
             </div>
-            <div className="mt-5 h-56">
+            <div className="mt-3 h-52">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={agg.shares}
                   layout="vertical"
                   margin={{ left: 8, right: 12, top: 4, bottom: 0 }}
                 >
-                  <CartesianGrid stroke="#E8E0D0" horizontal={false} />
+                  <CartesianGrid stroke="#E2E8F0" horizontal={false} />
                   <XAxis type="number" hide />
                   <YAxis
                     type="category"
                     dataKey="label"
                     width={108}
-                    tick={{ fill: "#4A433A", fontSize: 11 }}
+                    tick={{ fill: "#4A5568", fontSize: 11 }}
                   />
                   <Tooltip
-                    cursor={{ fill: "rgba(196,60,36,0.06)" }}
+                    cursor={{ fill: "rgba(43,108,176,0.06)" }}
                     formatter={(v) => [`${Number(v).toFixed(1)}%`, "構成比"]}
-                    contentStyle={{
-                      background: "#FFFBF4",
-                      border: "1px solid #D6CCB8",
-                      fontSize: 12,
-                    }}
+                    contentStyle={{ background: "#fff", border: "1px solid #E2E8F0", fontSize: 12 }}
                   />
-                  <Bar dataKey="pct" fill="#C43C24" radius={[0, 2, 2, 0]} barSize={14} />
+                  <Bar dataKey="pct" fill="#2B6CB0" radius={[0, 2, 2, 0]} barSize={12} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -172,15 +162,12 @@ export default function ResultsPage() {
         ))}
       </div>
 
-      <section className="mt-12">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Crosstab</p>
-            <h2 className="mt-1 font-serif text-2xl">セグメントで割る。</h2>
-          </div>
+      <section className="mt-6">
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-[15px] font-semibold">クロス集計</h2>
           <div className="flex flex-wrap gap-2">
             <select
-              className="border border-line bg-surface px-2 py-1.5 text-xs"
+              className="select w-auto"
               value={qIndex}
               onChange={(e) => setQIndex(Number(e.target.value))}
             >
@@ -195,7 +182,7 @@ export default function ResultsPage() {
                 key={d}
                 type="button"
                 onClick={() => setDim(d)}
-                className={`px-3 py-1.5 text-xs ${dim === d ? "bg-ink text-paper" : "bg-chip"}`}
+                className={`btn ${dim === d ? "btn-primary" : "btn-ghost"}`}
               >
                 {d === "ageBand" ? "年齢" : d === "gender" ? "性別" : "地域"}
               </button>
@@ -205,33 +192,25 @@ export default function ResultsPage() {
         <HeatTable rows={crosses} />
       </section>
 
-      <section className="mt-12">
-        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">
-          Reason themes
-        </p>
-        <h2 className="mt-1 font-serif text-2xl">理由の地層。</h2>
-        <div className="mt-6 grid gap-3 md:grid-cols-2">
+      <section className="mt-6">
+        <h2 className="text-[15px] font-semibold">理由テーマ</h2>
+        <div className="mt-3 grid gap-3 md:grid-cols-2">
           {themes.map((t) => (
-            <article key={t.id} className="paper-card p-5">
+            <article key={t.id} className="card p-4">
               <div className="flex items-baseline justify-between">
-                <h3 className="font-serif text-lg">{t.label}</h3>
-                <p className="font-mono text-xs text-muted">{t.count}</p>
+                <h3 className="font-semibold">{t.label}</h3>
+                <p className="text-[12px] text-muted">{t.count}</p>
               </div>
-              <div className="mt-2 h-1 bg-chip">
-                <div className="h-1 bg-indigo" style={{ width: `${t.share * 100}%` }} />
+              <div className="mt-2 h-1.5 bg-slate-100">
+                <div className="h-1.5 bg-brand" style={{ width: `${t.share * 100}%` }} />
               </div>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-3 space-y-1.5 text-[13px] text-ink-soft">
                 {t.samples.map((s) => (
-                  <li key={s} className="text-sm leading-6 text-ink-soft">
-                    「{s}」
-                  </li>
+                  <li key={s}>「{s}」</li>
                 ))}
               </ul>
             </article>
           ))}
-          {themes.length === 0 && (
-            <p className="text-sm text-muted">この設問ではテーマが抽出できませんでした。</p>
-          )}
         </div>
       </section>
     </div>
@@ -240,9 +219,9 @@ export default function ResultsPage() {
 
 function Kpi({ label, value, note }: { label: string; value: string; note: string }) {
   return (
-    <div className="paper-card p-5">
+    <div className="card p-4">
       <p className="text-[11px] text-muted">{label}</p>
-      <p className="mt-2 font-serif text-3xl">{value}</p>
+      <p className="mt-1 text-2xl font-semibold">{value}</p>
       <p className="mt-1 text-[11px] text-muted">{note}</p>
     </div>
   );
@@ -252,13 +231,13 @@ function HeatTable({ rows }: { rows: Crosstab[] }) {
   if (!rows.length) return null;
   const cols = rows[0]!.cols;
   return (
-    <div className="paper-card mt-5 overflow-x-auto scrollbar-thin">
-      <table className="min-w-[640px] w-full text-left text-xs">
+    <div className="card overflow-x-auto scrollbar-thin">
+      <table className="w-full min-w-[640px] text-left text-[12px]">
         <thead>
-          <tr className="border-b border-line text-muted">
-            <th className="px-3 py-3 font-normal">選択肢</th>
+          <tr className="border-b border-line bg-slate-50 text-muted">
+            <th className="px-3 py-2.5 font-medium">選択肢</th>
             {cols.map((c) => (
-              <th key={c.key} className="px-2 py-3 text-center font-normal">
+              <th key={c.key} className="px-2 py-2.5 text-center font-medium">
                 {c.label}
               </th>
             ))}
@@ -266,15 +245,13 @@ function HeatTable({ rows }: { rows: Crosstab[] }) {
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.rowKey} className="border-b border-line/70">
-              <td className="px-3 py-2.5 text-ink-soft">{r.rowLabel}</td>
+            <tr key={r.rowKey} className="border-b border-line">
+              <td className="px-3 py-2 text-ink-soft">{r.rowLabel}</td>
               {r.cols.map((c) => (
                 <td key={c.key} className="px-1 py-1.5 text-center">
                   <span
-                    className="inline-block min-w-[3.2rem] px-1 py-1"
-                    style={{
-                      background: `rgba(196,60,36,${Math.min(0.45, c.pct / 140)})`,
-                    }}
+                    className="inline-block min-w-[3rem] px-1 py-1"
+                    style={{ background: `rgba(43,108,176,${Math.min(0.4, c.pct / 140)})` }}
                   >
                     {pct(c.pct, 0)}
                   </span>

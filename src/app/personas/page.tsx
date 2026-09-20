@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { PageIntro } from "@/components/layout/Chrome";
+import { PageHead } from "@/components/layout/Chrome";
 import { getPanel } from "@/lib/personas/panel";
 import {
   AGE_LABEL,
@@ -47,25 +47,20 @@ export default function PersonasPage() {
   }, [all, age, region, q]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <PageIntro
-        kicker="Persona gallery"
-        title="一千の面。"
-        lede="人口加重で置いた仮想日本人。属性だけでなく、価値観の連続量を持ちます。実在の個人ではありません。"
+    <div className="p-4 sm:p-5">
+      <PageHead
+        crumbs={["モニター管理", "モニター一覧"]}
+        title="仮想モニター一覧"
+        actions={<span className="badge-synth">仮想パネル／実在の個人ではありません</span>}
       />
-
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="mb-3 flex flex-col gap-2 sm:flex-row">
         <input
+          className="input"
           placeholder="名前・土地・仕事で探す"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          className="flex-1 border border-line bg-surface px-3 py-2 text-sm outline-none"
         />
-        <select
-          value={age}
-          onChange={(e) => setAge(e.target.value as AgeBand | "")}
-          className="border border-line bg-surface px-3 py-2 text-sm"
-        >
+        <select className="select sm:max-w-[160px]" value={age} onChange={(e) => setAge(e.target.value as AgeBand | "")}>
           <option value="">すべての年齢</option>
           {AGE_BANDS.map((b) => (
             <option key={b} value={b}>
@@ -74,9 +69,9 @@ export default function PersonasPage() {
           ))}
         </select>
         <select
+          className="select sm:max-w-[160px]"
           value={region}
           onChange={(e) => setRegion(e.target.value as Region | "")}
-          className="border border-line bg-surface px-3 py-2 text-sm"
         >
           <option value="">すべての地域</option>
           {REGIONS.map((b) => (
@@ -86,9 +81,8 @@ export default function PersonasPage() {
           ))}
         </select>
       </div>
-      <p className="mt-3 text-xs text-muted">{filtered.length} 人</p>
-
-      <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <p className="mb-3 text-[12px] text-muted">{filtered.length} 人</p>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.slice(0, 60).map((p) => (
           <PersonaCard
             key={p.id}
@@ -98,16 +92,8 @@ export default function PersonasPage() {
           />
         ))}
       </div>
-      {filtered.length > 60 && (
-        <p className="mt-6 text-center text-xs text-muted">
-          表示は先頭 60 人。絞り込みで残りの面を見てください。
-        </p>
-      )}
       {filtered.length === 0 && (
-        <div className="paper-card mt-8 p-8 text-center">
-          <p className="font-serif text-xl">この条件の面は、いない。</p>
-          <p className="mt-2 text-sm text-muted">フィルタをゆるめてください。</p>
-        </div>
+        <div className="card p-8 text-center text-[13px] text-muted">この条件のモニターはいません。</div>
       )}
     </div>
   );
@@ -123,37 +109,32 @@ function PersonaCard({
   onToggle: () => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      className="paper-card p-4 text-left transition hover:-translate-y-0.5"
-    >
+    <button type="button" onClick={onToggle} className="card p-4 text-left">
       <div className="flex items-start justify-between">
-        <p className="font-mono text-[10px] text-muted">{p.id}</p>
-        <span className="bg-chip px-1.5 py-0.5 text-[10px] text-muted">SYNTH</span>
+        <p className="text-[11px] text-muted">{p.id}</p>
+        <span className="badge-synth">SYNTH</span>
       </div>
-      <h3 className="mt-1 font-serif text-lg">{p.displayName}</h3>
-      <p className="mt-1 text-xs text-muted">
+      <h3 className="mt-1 font-semibold">{p.displayName}</h3>
+      <p className="mt-1 text-[12px] text-muted">
         {p.age}歳 {GENDER_LABEL[p.gender]} ／ {p.prefecture} ／ {p.occupation}
       </p>
-      <p className="mt-1 text-[11px] text-muted">
+      <p className="text-[11px] text-muted">
         {HOUSEHOLD_LABEL[p.household]} · {INCOME_LABEL[p.incomeBand]}
       </p>
-      <p className="mt-3 line-clamp-3 text-xs leading-6 text-ink-soft">{p.bio}</p>
+      <p className="mt-2 line-clamp-3 text-[12px] leading-6 text-ink-soft">{p.bio}</p>
       {open && (
-        <div className="mt-4 space-y-2">
+        <div className="mt-3 space-y-1.5">
           {PEEK_TRAITS.map((k) => (
             <div key={k}>
               <div className="flex justify-between text-[10px] text-muted">
                 <span>{TRAIT_LABELS[k]}</span>
-                <span className="font-mono">{p.traits[k].toFixed(2)}</span>
+                <span>{p.traits[k].toFixed(2)}</span>
               </div>
-              <div className="mt-0.5 h-1 bg-chip">
-                <div className="h-1 bg-vermillion" style={{ width: `${p.traits[k] * 100}%` }} />
+              <div className="h-1 bg-slate-100">
+                <div className="h-1 bg-brand" style={{ width: `${p.traits[k] * 100}%` }} />
               </div>
             </div>
           ))}
-          <p className="pt-1 text-[11px] text-ink-soft">{p.values.join(" · ")}</p>
         </div>
       )}
     </button>

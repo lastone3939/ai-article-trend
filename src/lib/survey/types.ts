@@ -9,6 +9,7 @@ export type Question = {
   type: QuestionType;
   text: string;
   help?: string;
+  required?: boolean;
   options?: QuestionOption[];
   scale?: { min: number; max: number; minLabel: string; maxLabel: string };
 };
@@ -18,6 +19,12 @@ export type Survey = {
   title: string;
   description: string;
   category: string;
+  subcategory?: string;
+  method?: "virtual" | "internet" | "mail" | "venue";
+  periodStart?: string;
+  periodEnd?: string;
+  status?: "draft" | "ready";
+  memo?: string;
   questions: Question[];
   sampleSize: number;
   filters?: PersonaFilter;
