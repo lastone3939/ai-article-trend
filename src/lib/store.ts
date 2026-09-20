@@ -46,10 +46,14 @@ export function saveDraft(survey: Survey) {
 }
 
 export function saveRun(result: RunResult) {
-  const raw = JSON.stringify(result);
-  sessionStorage.setItem(RUN_KEY, raw);
-  runRaw = raw;
   runValue = result;
+  try {
+    const raw = JSON.stringify(result);
+    sessionStorage.setItem(RUN_KEY, raw);
+    runRaw = raw;
+  } catch {
+    runRaw = undefined;
+  }
   window.dispatchEvent(new Event(RUN_EVT));
 }
 
@@ -68,10 +72,14 @@ function snapshotDraft() {
 }
 
 function snapshotRun() {
-  const raw = sessionStorage.getItem(RUN_KEY);
-  if (raw !== runRaw) {
-    runRaw = raw;
-    runValue = parseRun(raw);
+  try {
+    const raw = sessionStorage.getItem(RUN_KEY);
+    if (raw != null && raw !== runRaw) {
+      runRaw = raw;
+      runValue = parseRun(raw);
+    }
+  } catch {
+    /* private mode / quota */
   }
   return runValue;
 }

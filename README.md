@@ -32,6 +32,12 @@ npm install && npm run dev
 - 選択 + 短い日本語理由
 - ブラウザだけの実行（DB・外部API不要）
 
+## デプロイ（任意）
+
+Vercel ならリポジトリを import して Framework Preset: Next.js のまま Deploy。環境変数は不要です。
+
+プレビューが無い場合は、上記のローカル起動で十分です。
+
 ## 対象外
 
 ブラウザ自動操作、実人同等の主張、実査との本学習。
