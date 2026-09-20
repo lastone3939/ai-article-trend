@@ -22,7 +22,7 @@ export interface Choice<TSelected extends SelectedValue = SelectedValue> {
   reason: string;
   /** 0–1。効用差が開くほど高い。 */
   confidence: number;
-  /** 0–1。価値観・過去選択との整合。L1 は stub 計算。 */
+  /** 0–1。同一ペルソナの先行回答との整合。 */
   consistency: number;
 }
 

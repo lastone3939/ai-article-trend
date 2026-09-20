@@ -1,8 +1,11 @@
 import type { Persona } from "../personas/types";
 import { clamp01, gauss, mulberry32 } from "../rng";
 import type { Question } from "../survey/types";
-import type { Choice, Score } from "./typesafe";
+import type { Prior } from "./memory";
+import { applyCoherence } from "./memory";
 import { reasonFor } from "./reasons";
+import type { Choice, Score } from "./typesafe";
+import { pickFromJev, type JevAnswer } from "./jev";
 
 function softmaxPick(rng: () => number, scores: Score[]): Score {
   const max = Math.max(...scores.map((s) => s.utility));
@@ -22,23 +25,11 @@ function confidenceOf(scores: Score[], picked: Score) {
   return clamp01(0.42 + gap * 1.4 + (picked.utility - 0.4) * 0.2);
 }
 
-function topFactor(factors: Record<string, number>) {
-  return (
-    Object.entries(factors).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))[0]?.[0] ??
-    "convenience"
-  );
-}
-
-function optionUtility(persona: Persona, questionId: string, optionId: string) {
+function optionUtility(persona: Persona, questionId: string, optionId: string, priors: Prior[]) {
   const t = persona.traits;
   const urban = persona.region === "kanto" || persona.region === "kinki" ? 0.08 : 0;
   const young = persona.age < 35 ? 0.08 : persona.age >= 65 ? -0.1 : 0;
   const factors: Record<string, number> = {};
-
-  const add = (k: string, v: number) => {
-    factors[k] = (factors[k] ?? 0) + v;
-  };
-
   let u = 0.15;
 
   if (questionId === "q_freq") {
@@ -50,7 +41,6 @@ function optionUtility(persona: Persona, questionId: string, optionId: string) {
       young +
       (persona.household === "single" ? 0.08 : 0) -
       (persona.currentState.lastConvenienceVisitDays > 10 ? 0.08 : 0);
-    add("convenience", conv);
     const map: Record<string, number> = {
       f_high: conv + 0.05,
       f_mid: conv + 0.12,
@@ -59,6 +49,7 @@ function optionUtility(persona: Persona, questionId: string, optionId: string) {
       f_rare: 0.08 + t.cookingHabit * 0.4 - conv * 0.45 + (persona.age >= 65 ? 0.18 : 0),
     };
     u += map[optionId] ?? 0;
+    factors.convenience = conv;
   }
 
   if (questionId === "q_priority") {
@@ -70,12 +61,8 @@ function optionUtility(persona: Persona, questionId: string, optionId: string) {
       p_new: t.noveltySeeking * 0.7 + t.impulseBuying * 0.15,
       p_brand: t.brandLoyalty * 0.55 + t.socialConformity * 0.15,
     };
-    Object.entries(map).forEach(([k, v]) => {
-      if (k === optionId) {
-        u += v;
-        add(k.slice(2), v);
-      }
-    });
+    u += map[optionId] ?? 0;
+    factors.priority = map[optionId] ?? 0;
   }
 
   if (questionId === "q_store") {
@@ -87,7 +74,7 @@ function optionUtility(persona: Persona, questionId: string, optionId: string) {
       s_none: t.cookingHabit * 0.35 - t.convenienceSeeking * 0.25 + (persona.age >= 65 ? 0.12 : 0),
     };
     u += map[optionId] ?? 0;
-    add("store", map[optionId] ?? 0);
+    factors.store = map[optionId] ?? 0;
   }
 
   if (questionId === "q_barrier") {
@@ -100,13 +87,23 @@ function optionUtility(persona: Persona, questionId: string, optionId: string) {
       b_none: t.convenienceSeeking * 0.25 + t.healthOrientation * 0.2 + t.noveltySeeking * 0.15,
     };
     u += map[optionId] ?? 0;
-    add("barrier", map[optionId] ?? 0);
+    factors.barrier = map[optionId] ?? 0;
+  }
+
+  const freq = String(priors.find((p) => p.questionId === "q_freq")?.selected ?? "");
+  if (freq === "f_rare") {
+    if (questionId === "q_intent_498" || questionId === "q_intent_598") u -= 0.12;
+    if (optionId === "s_none" || optionId === "b_habit") u += 0.18;
+  }
+  if (priors.some((p) => p.questionId === "q_priority" && String(p.selected) === "p_price")) {
+    if (questionId === "q_intent_598") u -= 0.1;
+    if (optionId === "b_price") u += 0.12;
   }
 
   return { utility: u, factors };
 }
 
-function scaleIntent(persona: Persona, questionId: string) {
+function scaleIntent(persona: Persona, questionId: string, priors: Prior[]) {
   const t = persona.traits;
   let latent =
     0.18 +
@@ -123,63 +120,126 @@ function scaleIntent(persona: Persona, questionId: string) {
 
   if (questionId === "q_intent_598") latent -= 0.12 + t.frugalityPride * 0.08;
   latent += (persona.currentState.hunger - 0.5) * 0.08;
-  latent = clamp01(latent);
-
-  const factors = {
-    health: t.healthOrientation,
-    convenience: t.convenienceSeeking,
-    price: questionId === "q_intent_598" ? t.priceSensitivity : t.priceSensitivity * 0.4,
-    cooking: t.cookingHabit,
+  const freq = String(priors.find((p) => p.questionId === "q_freq")?.selected ?? "");
+  if (freq === "f_rare") latent -= 0.18;
+  if (freq === "f_high" || freq === "f_mid") latent += 0.08;
+  const prev = priors.find((p) => p.questionId === "q_intent_498");
+  if (questionId === "q_intent_598" && typeof prev?.selected === "number") {
+    latent = Math.min(latent, (prev.selected - 1) / 4);
+  }
+  return {
+    latent: clamp01(latent),
+    factors: {
+      health: t.healthOrientation,
+      convenience: t.convenienceSeeking,
+      price: questionId === "q_intent_598" ? t.priceSensitivity : t.priceSensitivity * 0.4,
+      cooking: t.cookingHabit,
+    },
   };
-  return { latent, factors };
 }
 
-export function decide(persona: Persona, question: Question): Choice {
+export function decideLocal(
+  persona: Persona,
+  question: Question,
+  priors: Prior[] = [],
+  jevHint?: Record<string, number>,
+): Choice {
   const rng = mulberry32(persona.seed + hash(question.id) * 17);
 
   if (question.type === "scale" && question.scale) {
-    const { latent, factors } = scaleIntent(persona, question.id);
-    const noisy = clamp01(latent + (rng() - 0.5) * 0.22);
+    const { latent, factors } = scaleIntent(persona, question.id, priors);
+    let biased = latent;
+    if (jevHint) {
+      const keys = Object.keys(jevHint);
+      const weighted =
+        keys.reduce((s, k) => s + Number(k) * (jevHint[k] ?? 0), 0) /
+        Math.max(1e-6, keys.reduce((s, k) => s + (jevHint[k] ?? 0), 0));
+      biased = clamp01(latent * 0.55 + (weighted / (question.scale.max || 4)) * 0.45);
+    }
+    const noisy = clamp01(biased + (rng() - 0.5) * 0.16);
     const span = question.scale.max - question.scale.min;
-    const value = Math.round(question.scale.min + noisy * span);
-    const clamped = Math.min(question.scale.max, Math.max(question.scale.min, value));
+    let value = Math.round(question.scale.min + noisy * span);
+    value = Number(applyCoherence(question.id, value, priors));
+    value = Math.min(question.scale.max, Math.max(question.scale.min, value));
     const scores: Score[] = [];
     for (let i = question.scale.min; i <= question.scale.max; i++) {
       scores.push({
         optionId: String(i),
-        utility: 1 - Math.abs(i - (question.scale.min + latent * span)) / span,
+        utility: 1 - Math.abs(i - (question.scale.min + biased * span)) / span,
         factors,
       });
     }
     return {
-      selected: clamped,
+      selected: value,
       scores,
-      reason: reasonFor(persona, question.id, String(clamped), topFactor(factors)),
-      confidence: clamp01(0.5 + Math.abs(latent - 0.5)),
-      consistency: clamp01(0.62 + (1 - Math.abs(noisy - latent)) * 0.3),
+      reason: reasonFor(persona, question.id, String(value), priors),
+      confidence: clamp01(0.5 + Math.abs(biased - 0.5)),
+      consistency: clamp01(0.7 + (1 - Math.abs(noisy - biased)) * 0.25),
     };
   }
 
   const options = question.options ?? [];
   const scores: Score[] = options.map((opt) => {
-    const { utility, factors } = optionUtility(persona, question.id, opt.id);
+    const { utility, factors } = optionUtility(persona, question.id, opt.id, priors);
+    const hint = jevHint?.[opt.id] ?? 0;
     return {
       optionId: opt.id,
-      utility: utility + gauss(rng, 0, 0.06),
+      utility: utility + hint * 0.55 + gauss(rng, 0, 0.045),
       factors,
     };
   });
-
   const picked = softmaxPick(rng, scores);
-  const selected = question.type === "multi" ? [picked.optionId] : picked.optionId;
-
+  let selected: string | string[] | number =
+    question.type === "multi" ? [picked.optionId] : picked.optionId;
+  if (typeof selected === "string") {
+    selected = String(applyCoherence(question.id, selected, priors));
+  }
+  const sel = Array.isArray(selected) ? selected[0]! : String(selected);
   return {
     selected,
     scores,
-    reason: reasonFor(persona, question.id, picked.optionId, topFactor(picked.factors as Record<string, number>)),
+    reason: reasonFor(persona, question.id, sel, priors),
     confidence: confidenceOf(scores, picked),
-    consistency: clamp01(0.58 + picked.utility * 0.25),
+    consistency: clamp01(0.68 + picked.utility * 0.22),
   };
+}
+
+export function decideWithJev(
+  persona: Persona,
+  question: Question,
+  priors: Prior[],
+  answer: JevAnswer | undefined,
+): Choice {
+  const parsed = pickFromJev(question, answer);
+  if (!parsed) return decideLocal(persona, question, priors, answer?.probabilities);
+  const selected = applyCoherence(question.id, parsed.selected, priors);
+  const scores: Score[] = (question.options ?? []).map((opt) => ({
+    optionId: opt.id,
+    utility: parsed.probs[opt.id] ?? (opt.id === String(selected) ? parsed.confidence : 0.08),
+    factors: { jev: parsed.probs[opt.id] ?? 0 },
+  }));
+  if (question.type === "scale" && question.scale) {
+    for (let i = question.scale.min; i <= question.scale.max; i++) {
+      if (!scores.some((s) => s.optionId === String(i))) {
+        scores.push({
+          optionId: String(i),
+          utility: i === selected ? parsed.confidence : 0.1,
+          factors: { jev: 1 },
+        });
+      }
+    }
+  }
+  return {
+    selected,
+    scores: scores.length ? scores : [{ optionId: String(selected), utility: parsed.confidence, factors: { jev: 1 } }],
+    reason: reasonFor(persona, question.id, String(selected), priors),
+    confidence: parsed.confidence,
+    consistency: clamp01(0.78 + parsed.confidence * 0.18),
+  };
+}
+
+export function decide(persona: Persona, question: Question, priors: Prior[] = []): Choice {
+  return decideLocal(persona, question, priors);
 }
 
 function hash(s: string) {

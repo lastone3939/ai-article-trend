@@ -1,123 +1,101 @@
 import type { Persona } from "../personas/types";
-import { mulberry32, pick } from "../rng";
+import { mulberry32 } from "../rng";
+import type { Prior } from "./memory";
 
-const BANK: Record<string, string[]> = {
-  price: [
-    "値段を見て、手が止まる。",
-    "この値段なら、まだ許容できる。",
-    "同じなら、もっと安い店でいい。",
-    "今月は出費を抑えたい。",
-  ],
-  health: [
-    "たんぱく質が取れるなら試したい。",
-    "糖質が気になるので、低糖質は魅力。",
-    "表示をどこまで信じていいか分からない。",
-    "健康そうに見えても、塩分が心配。",
-  ],
-  convenience: [
-    "仕事帰りに、そのまま買えるのが楽。",
-    "作る時間がない日の逃げ場。",
-    "駅前で揃うなら、それで十分。",
-  ],
-  cooking: [
-    "弁当は家で作る。コンビニは高い。",
-    "温めるだけ、という生活にはしたくない。",
-    "たまにならいいが、日常にはしない。",
-  ],
-  taste: [
-    "健康弁当は味が薄いイメージがある。",
-    "おいしくなければ続かない。",
-    "一度食べてみてから判断したい。",
-  ],
-  volume: [
-    "高たんぱくだと量が少なく感じる。",
-    "腹持ちしないと、あとで間食する。",
-    "男性には物足りない気がする。",
-  ],
-  novelty: [
-    "新商品の棚は、つい手が伸びる。",
-    "話題のうちに一度は試したい。",
-    "目新しさだけではリピートしない。",
-  ],
-  family: [
-    "自分だけ別メニュー、というのは気が引ける。",
-    "子どもの分もあるので、単価が気になる。",
-    "自分の夜食なら、あり。",
-  ],
-  store: [
-    "いつもの店で揃うなら買う。",
-    "ポイントが貯まる店を優先する。",
-    "チェーンにこだわりはない。",
-  ],
-  rare: [
-    "コンビニ弁当は、ほとんど買わない。",
-    "必要なとき以外は、寄らない。",
-    "習慣になっていない。",
-  ],
-};
+function pick(rng: () => number, xs: string[]) {
+  return xs[Math.floor(rng() * xs.length)] ?? xs[0] ?? "";
+}
 
 export function reasonFor(
   persona: Persona,
   questionId: string,
   selectedId: string,
-  topFactor: string,
+  priors: Prior[],
 ): string {
-  const rng = mulberry32(persona.seed + hash(questionId + selectedId));
+  const rng = mulberry32(persona.seed + hash(questionId + selectedId + persona.occupation));
   const t = persona.traits;
+  const who =
+    persona.age >= 65
+      ? pick(rng, ["うちは", "最近は", "あんまり"])
+      : persona.age < 30
+        ? pick(rng, ["正直", "なんか", "だいたい"])
+        : pick(rng, ["うちは", "ふだんは", "正直"]);
+  const work =
+    persona.occupation.includes("会社") || persona.occupation.includes("IT")
+      ? "帰りが遅くなる日"
+      : persona.household === "family"
+        ? "子どもの夕飯のあと"
+        : "忙しい日";
 
   if (questionId === "q_freq") {
-    if (selectedId === "f_rare" || selectedId === "f_month") return pick(rng, BANK.cooking.concat(BANK.rare));
-    return pick(rng, BANK.convenience);
-  }
-  if (questionId === "q_priority") {
-    const map: Record<string, string[]> = {
-      p_price: BANK.price,
-      p_taste: BANK.taste,
-      p_health: BANK.health,
-      p_volume: BANK.volume,
-      p_new: BANK.novelty,
-      p_brand: BANK.store,
-    };
-    return pick(rng, map[selectedId] ?? BANK.taste);
-  }
-  if (questionId === "q_intent_498" || questionId === "q_intent_598") {
-    const n = Number(selectedId);
-    if (questionId === "q_intent_598" && n <= 2) return pick(rng, BANK.price);
-    if (n >= 4) {
-      if (t.healthOrientation > 0.55) return pick(rng, BANK.health);
-      return pick(rng, BANK.convenience.concat(BANK.novelty));
-    }
-    if (t.cookingHabit > 0.6) return pick(rng, BANK.cooking);
-    if (t.priceSensitivity > 0.6) return pick(rng, BANK.price);
-    return pick(rng, BANK.taste.concat(BANK.volume));
-  }
-  if (questionId === "q_store") {
-    if (selectedId === "s_none") return pick(rng, BANK.rare.concat(BANK.cooking));
-    return pick(rng, BANK.store);
-  }
-  if (questionId === "q_barrier") {
-    const map: Record<string, string[]> = {
-      b_price: BANK.price,
-      b_taste: BANK.taste,
-      b_volume: BANK.volume,
-      b_claim: BANK.health,
-      b_habit: BANK.cooking.concat(BANK.rare),
-      b_none: ["特に理由はない。条件が揃えば買う。", "試しに一度は手に取る。"],
-    };
-    return pick(rng, map[selectedId] ?? BANK.taste);
+    if (selectedId === "f_high") return `${work}は寄る。週に何回か、弁当で済ませてる。`;
+    if (selectedId === "f_mid") return `${work}、コンビニで済ますこと、週2回くらいはある。`;
+    if (selectedId === "f_week") return `週1回くらい。作りたくない夜に限る。`;
+    if (selectedId === "f_month") return `月に1回あるかないか。基本は家で食べる。`;
+    return t.cookingHabit > 0.55
+      ? `弁当は家で作る。コンビニは高いし、味も好みじゃない。`
+      : `必要なとき以外、あんまり寄らない。`;
   }
 
-  const fallback: Record<string, string[]> = {
-    price: BANK.price,
-    health: BANK.health,
-    convenience: BANK.convenience,
-    cooking: BANK.cooking,
-    taste: BANK.taste,
-    volume: BANK.volume,
-    novelty: BANK.novelty,
-    family: BANK.family,
-  };
-  return pick(rng, fallback[topFactor] ?? BANK.convenience);
+  if (questionId === "q_priority") {
+    const map: Record<string, string[]> = {
+      p_price: [
+        `値段見てからカゴに入れる。百円違うと迷う。`,
+        `同じなら安い方。今月ちょっと切り詰めてる。`,
+      ],
+      p_taste: [`まず味。健康でもまずかったら続かない。`, `おいしくない弁当は、二度と買わない。`],
+      p_health: [
+        `糖質と塩分は気にしてる。表示を見て選ぶ。`,
+        `たんぱく質が取れるなら、そっちにする。`,
+      ],
+      p_volume: [`量が少ないと、あとで間食する。腹持ち優先。`, `小分けは物足りない。`],
+      p_new: [`新商品の棚、つい見てしまう。`, `話題のうちに、一度は試したい。`],
+      p_brand: [`いつもの店で揃うなら買う。ポイントも気になる。`, `知ってるチェーンの方が安心。`],
+    };
+    return pick(rng, map[selectedId] ?? [`${who}、それで選んでる。`]);
+  }
+
+  if (questionId === "q_intent_498" || questionId === "q_intent_598") {
+    const n = Number(selectedId);
+    const yen = questionId === "q_intent_598" ? "598円" : "498円";
+    if (questionId === "q_intent_598" && n <= 2) {
+      return `498円なら考えるけど、${yen}は高い。他でいい。`;
+    }
+    if (n >= 4) {
+      return t.healthOrientation > 0.55
+        ? `低糖質なら、${yen}でも一度は買ってみる。`
+        : `${work}、${yen}なら手に取ると思う。`;
+    }
+    if (n === 3) return `気になるけど、味が薄そうで迷う。一度見てから。`;
+    if (priors.some((p) => p.questionId === "q_freq" && String(p.selected) === "f_rare")) {
+      return `弁当自体、ほとんど買わないから、今回もパスしそう。`;
+    }
+    return t.cookingHabit > 0.6
+      ? `家で作るし、この値段で温めるだけ、というのは気が引ける。`
+      : `表示をどこまで信じていいか分からない。`;
+  }
+
+  if (questionId === "q_store") {
+    if (selectedId === "s_none") return `買う気が起きない。店を選ぶ以前の話。`;
+    if (selectedId === "s_any") return `どこでもいい。近い方に入る。`;
+    if (selectedId === "s_seven") return `セブンが多いし、寄るならそこ。`;
+    if (selectedId === "s_famima") return `ファミマが近い。いつもの動線。`;
+    return `ローソンの方が、なんとなく体に良さそうなイメージ。`;
+  }
+
+  if (questionId === "q_barrier") {
+    const map: Record<string, string[]> = {
+      b_price: [`この値段、弁当にしては高い。`, `百円積み上がると、家で作った方がいい。`],
+      b_taste: [`健康弁当って、味が薄いイメージがある。`, `一度食べてみないと、買う気になれない。`],
+      b_volume: [`高たんぱくだと、量が少なそう。`, `昼にこれだと、夕方お腹が空く。`],
+      b_claim: [`「高たんぱく」って書いてあっても、どこまで本当か。`, `表示を信じきれない。`],
+      b_habit: [`弁当は買わない。それが習慣。`, `コンビニは飲み物とお菓子くらい。`],
+      b_none: [`特にない。条件が揃えば買う。`, `試しに一度は手に取る。`],
+    };
+    return pick(rng, map[selectedId] ?? [`なんとなく、引っかかる。`]);
+  }
+
+  return `${who}、そう答えると思う。`;
 }
 
 function hash(s: string) {

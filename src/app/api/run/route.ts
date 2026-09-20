@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   if (!survey.questions?.length) {
     return NextResponse.json({ error: "調査に設問がありません" }, { status: 400 });
   }
-  const result = runSurvey({
+  const result = await runSurvey({
     ...survey,
     sampleSize: Math.min(1000, Math.max(50, survey.sampleSize || 1000)),
   });
@@ -17,6 +17,6 @@ export async function POST(req: Request) {
 }
 
 export async function GET() {
-  const result = runSurvey(DEMO_SURVEY);
+  const result = await runSurvey(DEMO_SURVEY);
   return NextResponse.json(result);
 }
