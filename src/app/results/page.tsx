@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Bar,
   BarChart,
@@ -20,11 +21,45 @@ import {
   type Crosstab,
 } from "@/lib/aggregation/aggregate";
 import { downloadText, toCsv } from "@/lib/aggregation/export";
-import { useLastRun } from "@/lib/store";
+import { saveRun, useLastRun } from "@/lib/store";
+import type { RunResult } from "@/lib/survey/types";
 import { fmtN, pct } from "@/lib/format";
 
 export default function ResultsPage() {
-  const result = useLastRun();
+  return (
+    <Suspense fallback={<div className="p-6 text-sm text-muted">読み込み中…</div>}>
+      <ResultsInner />
+    </Suspense>
+  );
+}
+
+function ResultsInner() {
+  const stored = useLastRun();
+  const params = useSearchParams();
+  const demo = params.get("demo") === "1";
+  const [fetched, setFetched] = useState<RunResult | null>(null);
+  const result = stored ?? fetched;
+  const loading = demo && !result;
+
+  useEffect(() => {
+    if (stored || !demo) return;
+    let cancelled = false;
+    fetch("/api/run")
+      .then((r) => r.json())
+      .then((data: RunResult) => {
+        if (cancelled) return;
+        try {
+          saveRun(data);
+        } catch {
+          /* session full */
+        }
+        setFetched(data);
+      })
+      .catch(() => undefined);
+    return () => {
+      cancelled = true;
+    };
+  }, [demo, stored]);
   const [dim, setDim] = useState<"ageBand" | "gender" | "region">("ageBand");
   const [qIndex, setQIndex] = useState(0);
   const aggs = useMemo(
@@ -47,7 +82,9 @@ export default function ResultsPage() {
       <div className="p-4 sm:p-5">
         <PageHead crumbs={["集計・分析", "リアルタイム集計"]} title="集計結果" />
         <div className="card max-w-xl p-6">
-          <p className="text-[15px] font-semibold">まだ結果がありません</p>
+          <p className="text-[15px] font-semibold">
+            {loading ? "仮想パネルを集計しています…" : "まだ結果がありません"}
+          </p>
           <p className="mt-2 text-[13px] leading-6 text-ink-soft">
             デモ調査を実行すると、仮想パネルの合成回答がここに並びます。
           </p>

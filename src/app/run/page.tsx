@@ -22,18 +22,19 @@ function RunInner() {
   const [ticker, setTicker] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const resultRef = useRef<RunResult | null>(null);
+  const startedRef = useRef(false);
   const preview = useMemo(() => survey.questions.slice(0, 6), [survey]);
 
   useEffect(() => {
-    if (demo && !running && !resultRef.current) {
-      const t = setTimeout(() => void start(), 300);
-      return () => clearTimeout(t);
-    }
+    if (!demo) return;
+    const t = window.setTimeout(() => void start(), 200);
+    return () => window.clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [demo]);
 
   async function start() {
-    if (running) return;
+    if (startedRef.current) return;
+    startedRef.current = true;
     setRunning(true);
     setError(null);
     setProgress(4);
@@ -50,15 +51,21 @@ function RunInner() {
       });
     }, 90);
     try {
-      const res = await fetch("/api/run", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ survey }),
-      });
+      const res = demo
+        ? await fetch("/api/run")
+        : await fetch("/api/run", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ survey }),
+          });
       if (!res.ok) throw new Error("実行に失敗しました");
       const data = (await res.json()) as RunResult;
       resultRef.current = data;
-      saveRun(data);
+      try {
+        saveRun(data);
+      } catch {
+        sessionStorage.setItem("kasou:has-run", "1");
+      }
       const lines = data.answers
         .filter((_, i) => i % Math.ceil(data.answers.length / 8) === 0)
         .slice(0, 8)
@@ -71,8 +78,9 @@ function RunInner() {
       setProgress(100);
       setPhase("集計");
       await new Promise((r) => setTimeout(r, 280));
-      router.push("/results");
+      router.push(demo ? "/results?demo=1" : "/results");
     } catch (e) {
+      startedRef.current = false;
       setError(e instanceof Error ? e.message : "エラー");
       setRunning(false);
     } finally {
