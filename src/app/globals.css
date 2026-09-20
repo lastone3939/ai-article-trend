@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-navy: #1b3654;
+  --color-navy-2: #152a43;
+  --color-brand: #2b6cb0;
+  --color-brand-dark: #1e4e8c;
+  --color-page: #f4f6f8;
+  --color-card: #ffffff;
+  --color-line: #e2e8f0;
+  --color-ink: #1a202c;
+  --color-ink-soft: #4a5568;
+  --color-muted: #718096;
+  --color-required: #e53e3e;
+  --font-sans: var(--font-sans-jp), "Hiragino Sans", "Noto Sans JP", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.btn:disabled {
+  opacity: 0.4;
+}
+.btn-primary {
+  background: var(--color-brand);
+  color: #fff;
+  border-color: var(--color-brand);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-brand-dark);
+}
+.btn-ghost {
+  background: #fff;
+  color: #2d3748;
+  border-color: #cbd5e0;
+}
+.btn-ghost:hover:not(:disabled) {
+  background: #f7fafc;
+}
+.card {
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+}
+.input,
+.select,
+.textarea {
+  width: 100%;
+  border: 1px solid #cbd5e0;
+  background: #f8fafc;
+  border-radius: 3px;
+  padding: 0 10px;
+  font-size: 13px;
+  color: var(--color-ink);
+  outline: none;
+}
+.input,
+.select {
+  height: 34px;
+}
+.textarea {
+  padding: 8px 10px;
+  resize: vertical;
+  min-height: 72px;
+}
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--color-brand);
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(43, 108, 176, 0.15);
+}
+.req {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: #e53e3e;
+  color: #fff;
+  font-size: 10px;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+.opt {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  background: #a0aec0;
+  color: #fff;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.badge-synth {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #ebf4ff;
+  color: #2b6cb0;
+  font-size: 11px;
+}
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 transparent;
+}
